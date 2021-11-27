@@ -51,29 +51,41 @@ def draw(ax, p, color):
     cornerpoints[6][:] = center + d1 - d2 + d3
     cornerpoints[7][:] = center + d1 + d2 + d3
 
-    ax.plot([cornerpoints[0][0], cornerpoints[1][0]], [cornerpoints[0][1], cornerpoints[1][1]],
+    ax.plot([cornerpoints[0][0], cornerpoints[1][0]], 
+            [cornerpoints[0][1], cornerpoints[1][1]],
             [cornerpoints[0][2], cornerpoints[1][2]], c=color)
-    ax.plot([cornerpoints[0][0], cornerpoints[2][0]], [cornerpoints[0][1], cornerpoints[2][1]],
+    ax.plot([cornerpoints[0][0], cornerpoints[2][0]], 
+            [cornerpoints[0][1], cornerpoints[2][1]],
             [cornerpoints[0][2], cornerpoints[2][2]], c=color)
-    ax.plot([cornerpoints[1][0], cornerpoints[3][0]], [cornerpoints[1][1], cornerpoints[3][1]],
+    ax.plot([cornerpoints[1][0], cornerpoints[3][0]], 
+            [cornerpoints[1][1], cornerpoints[3][1]],
             [cornerpoints[1][2], cornerpoints[3][2]], c=color)
-    ax.plot([cornerpoints[2][0], cornerpoints[3][0]], [cornerpoints[2][1], cornerpoints[3][1]],
+    ax.plot([cornerpoints[2][0], cornerpoints[3][0]], 
+            [cornerpoints[2][1], cornerpoints[3][1]],
             [cornerpoints[2][2], cornerpoints[3][2]], c=color)
-    ax.plot([cornerpoints[4][0], cornerpoints[5][0]], [cornerpoints[4][1], cornerpoints[5][1]],
+    ax.plot([cornerpoints[4][0], cornerpoints[5][0]], 
+            [cornerpoints[4][1], cornerpoints[5][1]],
             [cornerpoints[4][2], cornerpoints[5][2]], c=color)
-    ax.plot([cornerpoints[4][0], cornerpoints[6][0]], [cornerpoints[4][1], cornerpoints[6][1]],
+    ax.plot([cornerpoints[4][0], cornerpoints[6][0]], 
+            [cornerpoints[4][1], cornerpoints[6][1]],
             [cornerpoints[4][2], cornerpoints[6][2]], c=color)
-    ax.plot([cornerpoints[5][0], cornerpoints[7][0]], [cornerpoints[5][1], cornerpoints[7][1]],
+    ax.plot([cornerpoints[5][0], cornerpoints[7][0]], 
+            [cornerpoints[5][1], cornerpoints[7][1]],
             [cornerpoints[5][2], cornerpoints[7][2]], c=color)
-    ax.plot([cornerpoints[6][0], cornerpoints[7][0]], [cornerpoints[6][1], cornerpoints[7][1]],
+    ax.plot([cornerpoints[6][0], cornerpoints[7][0]], 
+            [cornerpoints[6][1], cornerpoints[7][1]],
             [cornerpoints[6][2], cornerpoints[7][2]], c=color)
-    ax.plot([cornerpoints[0][0], cornerpoints[4][0]], [cornerpoints[0][1], cornerpoints[4][1]],
+    ax.plot([cornerpoints[0][0], cornerpoints[4][0]], 
+            [cornerpoints[0][1], cornerpoints[4][1]],
             [cornerpoints[0][2], cornerpoints[4][2]], c=color)
-    ax.plot([cornerpoints[1][0], cornerpoints[5][0]], [cornerpoints[1][1], cornerpoints[5][1]],
+    ax.plot([cornerpoints[1][0], cornerpoints[5][0]], 
+            [cornerpoints[1][1], cornerpoints[5][1]],
             [cornerpoints[1][2], cornerpoints[5][2]], c=color)
-    ax.plot([cornerpoints[2][0], cornerpoints[6][0]], [cornerpoints[2][1], cornerpoints[6][1]],
+    ax.plot([cornerpoints[2][0], cornerpoints[6][0]], 
+            [cornerpoints[2][1], cornerpoints[6][1]],
             [cornerpoints[2][2], cornerpoints[6][2]], c=color)
-    ax.plot([cornerpoints[3][0], cornerpoints[7][0]], [cornerpoints[3][1], cornerpoints[7][1]],
+    ax.plot([cornerpoints[3][0], cornerpoints[7][0]], 
+            [cornerpoints[3][1], cornerpoints[7][1]],
             [cornerpoints[3][2], cornerpoints[7][2]], c=color)
 
 def showGenshapes(genshapes):
@@ -108,3 +120,5 @@ def showGenshape(genshape):
         draw(ax, p, cmap(float(jj)/len(recover_boxes)))
 
     plt.show()
+
+# tryPlot()

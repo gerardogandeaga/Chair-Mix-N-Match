@@ -3,6 +3,7 @@ from torch.utils import data
 from scipy.io import loadmat
 from enum import Enum
 import os
+import pprint
 
 class Tree(object):
     class NodeType(Enum):
@@ -36,6 +37,7 @@ class Tree(object):
         sym_param.reverse()
         label_list.reverse()
         queue = []
+        # pprint.pprint(sym_param)
         for id in range(ops.size()[1]):
             if ops[0, id] == Tree.NodeType.BOX.value:
                 queue.append(Tree.Node(box=box_list.pop(), node_type=Tree.NodeType.BOX, label=label_list.pop()))
@@ -49,21 +51,19 @@ class Tree(object):
         assert len(queue) == 1
         self.root = queue[0]
 
-
 class GRASSDataset(data.Dataset,):
-    def __init__(self, dir, models_num=0, transform=None):
+    def __init__(self, dir,  models_num, transform=None):
         # self.dir = dir
-        dir = "../dataset"
+        dir = "./dataset"
         self.dir = dir
         num_examples = len(os.listdir(os.path.join(dir, 'ops')))
-        print(num_examples)
         self.transform = transform
         self.trees = []
-        for i in range(1,models_num):
-            boxes = torch.from_numpy(loadmat(os.path.join(dir, 'boxes', '%d.mat' % (i+1)))['box']).t().float()
-            ops = torch.from_numpy(loadmat(os.path.join(dir, 'ops', '%d.mat' % (i+1)))['op']).int()
-            syms = torch.from_numpy(loadmat(os.path.join(dir, 'syms', '%d.mat' % (i+1)))['sym']).t().float()
-            labels = torch.from_numpy(loadmat(os.path.join(dir, 'labels', '%d.mat' % (i+1)))['label']).int()
+        for i in models_num:
+            boxes = torch.from_numpy(loadmat(os.path.join(dir, 'boxes', '%d.mat' % (i)))['box']).t().float()
+            ops = torch.from_numpy(loadmat(os.path.join(dir, 'ops', '%d.mat' % (i)))['op']).int()
+            syms = torch.from_numpy(loadmat(os.path.join(dir, 'syms', '%d.mat' % (i)))['sym']).t().float()
+            labels = torch.from_numpy(loadmat(os.path.join(dir, 'labels', '%d.mat' % (i)))['label']).int()
             tree = Tree(boxes, ops, syms, labels)
             self.trees.append(tree)
 
