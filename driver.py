@@ -16,7 +16,7 @@ if __name__ == "__main__":
     # 66, 4037, 2177
     # 6012, 3453, 3336, 2234, 1392
     # 653, 18, 734, 1791, 2207, 3663, 4903, 2428, 722, 4294
-    models = Model.load_models([66, 4037, 2177, 3453]) # you should be passing the output here into the mixer
+    models = Model.load_models([2177]) # you should be passing the output here into the mixer
 
     for i,model in enumerate(models):
         parts = model.components
@@ -35,6 +35,7 @@ if __name__ == "__main__":
         # You can also merge SimpleObjs like this...
         # back_and_seat_obj = SimpleObj.merge_objs([parts["objs"]["back"], parts["objs"]["seat"]]) # this will merge the back and seat SimpleObjects
         # SimpleObj.save("back-and-seat-{}".format(i), back_and_seat_obj)
+        # SimpleObj.save("back-{}".format(i), parts["objs"]["back"]) # this will save the back component of a chair
 
     # ------------------- Mixer -------------------------
     # the the function below hasnt been created yet, make sure to put your mixer logic in the .mixer/ folder 
