@@ -28,7 +28,9 @@ class SimpleObj:
 	# Takes a list of SimpleObjs and returns a new merged simple obj
 	@staticmethod
 	def merge_objs(simple_objs) -> 'SimpleObj':
-		new_obj = simple_objs[0]
+		
+		# new_obj = simple_objs[0]
+		new_obj = SimpleObj.create(simple_objs[0].verts, copy.deepcopy(simple_objs[0].faces))
 
 		if len(simple_objs) == 1:
 			return new_obj
@@ -36,7 +38,7 @@ class SimpleObj:
 		# merge new simple objs 
 		for simple_obj in simple_objs[1:]:
 			n_verts = len(new_obj.verts)
-			faces = simple_obj.faces
+			faces = copy.deepcopy(simple_obj.faces)
 			faces = list(map(lambda f: f + n_verts, faces))
 			new_obj.verts.extend(simple_obj.verts)
 			new_obj.faces.extend(faces)
