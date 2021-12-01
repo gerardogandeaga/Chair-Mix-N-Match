@@ -28,7 +28,9 @@ class SimpleObj:
 	# Takes a list of SimpleObjs and returns a new merged simple obj
 	@staticmethod
 	def merge_objs(simple_objs) -> 'SimpleObj':
-		new_obj = simple_objs[0]
+		
+		# new_obj = simple_objs[0]
+		new_obj = SimpleObj.create(simple_objs[0].verts, simple_objs[0].faces)
 
 		if len(simple_objs) == 1:
 			return new_obj

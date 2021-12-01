@@ -79,9 +79,9 @@ def decode_structure(root):
                 center = torch.cat([bList[0], bList[1], bList[2]])
                 trans_length = math.sqrt(torch.sum(trans**2))
                 trans_total = math.sqrt(torch.sum(trans_end.add(-center)**2))
-                folds = round(trans_total/trans_length)
+                folds = round(trans_total/trans_length) + 1
                 for i in range(folds):
-                    center = torch.cat([bList[0], bList[1], bList[2]])
+                    center = torch.cat([bList[0] + 0.2, bList[1] - 0.18, bList[2] + 0.15])
                     dir0 = torch.cat([bList[3], bList[4], bList[5]])
                     dir1 = torch.cat([bList[6], bList[7], bList[8]])
                     dir2 = torch.cat([bList[9], bList[10], bList[11]])
@@ -111,21 +111,20 @@ def decode_structure(root):
                 reBoxes.append(newbox)
 
             
-            print(node.label.item(), "->", reBoxes)
+            # print(node.label.item(), "->", reBoxes)
             boxes.extend(reBoxes)
 
     return boxes
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 #     print("ji")
-    # grassdata = GRASSDataset('chair',3)
-    # boxes = decode_structure(grassdata[0].root)
-    # showGenshape(boxes)
+    grassdata = GRASSDataset('chair',[2177])
+    boxes = decode_structure(grassdata[0].root)
+    showGenshape(boxes)
 
     # print("In module products __package__, __name__ ==", __package__, __name__)
     # models_parts = parser.load_models([3])
-    # pprint.pprint(models_parts)
     
     # for i in range(len(grassdata)):
     #     boxes = decode_structure(grassdata[i].root)
