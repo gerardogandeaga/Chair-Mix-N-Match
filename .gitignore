@@ -3,3 +3,6 @@ dataset/
 venv/
 */__pycache__
 *.obj
+
+.DS_Store
+.vim/
