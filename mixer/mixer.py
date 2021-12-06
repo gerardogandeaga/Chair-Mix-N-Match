@@ -26,19 +26,22 @@ def random_choose(objs):
         i += 1
     arm_rest = objs[num].components["objs"]["arm_rests"]
     arm_rests_center = objs[num].components["part_centers"]["arm_rests"]
+    arm_rests_seat = objs[num].components["objs"]["seat"]
     
     # get leg
     num = random.randint(0, len(objs)-1)
     print(num)
     legs = objs[num].components["objs"]["legs"]
     legs_center = objs[num].components["part_centers"]["legs"]
-
+    legs_seat = objs[num].components["objs"]["seat"]
     
     return {
         "original_obj": {
             "back": objs[original].components["objs"]["back"],
-            "legs": objs[original].components["objs"]["back"],
+            "legs": objs[original].components["objs"]["legs"],
             "arm_rests": objs[original].components["objs"]["arm_rests"],
+            "arm_rests_seat": arm_rests_seat,
+            "legs_seat": legs_seat,
         },
         "result_obj": {
             "back": back,
@@ -272,8 +275,7 @@ def change_seat_legs(component):
                         v[2] += z
                 minTopZ += z
                 maxTopZ += z
-                
-            
+                    
     if min(topX) < min(seatX) or max(topX) > max(seatX):
         x1 = max(origX) - min(origX)
         x2 = max(seatZ) - min(seatZ)
@@ -282,7 +284,16 @@ def change_seat_legs(component):
             v[0] = v[0] * aX
         for v in component["original_obj"]["back"].verts:
             v[0] = v[0] * aX
-                        
+        oXmax *= aX
+        oXmin *= aX
+        while min(topX) < oXmin or max(topX) > oXmax:
+            aX = int(aX) + (aX - int(aX))/4
+            for v in component["result_obj"]["seat"].verts:
+                v[0] = v[0] * aX
+            for v in component["original_obj"]["back"].verts:
+                v[0] = v[0] * aX
+            oXmax *= aX
+            oXmin *= aX              
         print("aX", aX)
     #print("original seat", max(resultLegsY), min(seatY),  max(legsY), component["original_center"]["seat"][0][1]) 
     return {
