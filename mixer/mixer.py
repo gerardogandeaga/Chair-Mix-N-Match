@@ -212,7 +212,6 @@ def change_seat_legs(component):
     legsX, legsY, legsZ = split_vertex(component["original_obj"]["legs"][0]) 
     resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
     
-    
     bY = max(legsY) - max(resultLegsY)
     y2 = max(resultLegsY) - min(resultLegsY)
     y1 = max(legsY) - min(legsY)
@@ -295,6 +294,7 @@ def change_seat_legs(component):
             oXmax *= aX
             oXmin *= aX              
         print("aX", aX)
+    
     #print("original seat", max(resultLegsY), min(seatY),  max(legsY), component["original_center"]["seat"][0][1]) 
     return {
         "original_obj": {
@@ -361,8 +361,8 @@ def mixer(objs):
     back_seat = SimpleObj.merge_objs([component["result_obj"]["seat"], component["result_obj"]["legs"][0], 
                                      component["result_obj"]["legs"][1], component["result_obj"]["legs"][2],
                                      component["result_obj"]["legs"][3]])
-    save("result_obj", component)
-    #SimpleObj.save("legs_seat", back_seat)
+    #save("result_obj", component)
+    SimpleObj.save("legs_seat", back_seat)
     
         
 def save(name, obj):
