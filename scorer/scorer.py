@@ -12,7 +12,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import transforms
 
-from model import PreTrainedResNet
+from .model import PreTrainedResNet
 
 # USE THESE PARAMS FOR FIXED RESNET
 NUM_EPOCHS = 3

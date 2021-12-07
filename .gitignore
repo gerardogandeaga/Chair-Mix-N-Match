@@ -8,3 +8,4 @@ venv/
 .vim/
 
 scorer/evaluate-chairs/
+*.bmp
