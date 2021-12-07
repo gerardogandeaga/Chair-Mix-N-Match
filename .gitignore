@@ -1,5 +1,5 @@
 _partnet-chairs/
-dataset/
+dataset*/
 venv/
 */__pycache__
 *.obj
