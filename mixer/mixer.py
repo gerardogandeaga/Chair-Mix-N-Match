@@ -345,19 +345,8 @@ def change_seat_legs(component):
         }
     } 
 
-def mixer(objs):
-    
-    #component = random_choose(objs)
-    component = test(objs)
-    com = change_seat_legs(component)
-    component["result_obj"] = com["result_obj"]
-    component["original_obj"] = com["original_obj"]
-    component["result_obj"] = change_seat_back(component)["result_obj"]
-    
-    x = component["original_center"]["seat"][0][0]
-    y = component["original_center"]["seat"][0][1]
-    z = component["original_center"]["seat"][0][2]
-     
+
+def change_arm_rests(component):
     SimpleObj.save("seat", component["result_obj"]["seat"])
     seatX, seatY, seatZ = split_vertex(component["result_obj"]["seat"])
     if component["original_obj"]["arm_rests"] != [] and component["result_obj"]["arm_rests"] != []:
@@ -391,12 +380,28 @@ def mixer(objs):
         #    v[0] = v[0] - bX
         #    v[1] = v[1] + bY
         #    v[2] = v[2] * aZ + bZ
+
+
+def mixer(objs):
+    
+    #component = random_choose(objs)
+    component = test(objs)
+    com = change_seat_legs(component)
+    component["result_obj"] = com["result_obj"]
+    component["original_obj"] = com["original_obj"]
+    component["result_obj"] = change_seat_back(component)["result_obj"]
+    
+    x = component["original_center"]["seat"][0][0]
+    y = component["original_center"]["seat"][0][1]
+    z = component["original_center"]["seat"][0][2]
+     
+    
     #back_seat = SimpleObj.merge_objs([component["result_obj"]["seat"], component["result_obj"]["legs"][0], 
     #                                 component["result_obj"]["legs"][1], component["result_obj"]["legs"][2],
     #                                 component["result_obj"]["legs"][3]])
-    back_seat = SimpleObj.merge_objs([component["result_obj"]["seat"], component["result_obj"]["legs"][2]])
-    #save("result_obj", component)
-    SimpleObj.save("legs_seat", back_seat)
+    #back_seat = SimpleObj.merge_objs([component["result_obj"]["seat"], component["result_obj"]["legs"][2]])
+    save("result_obj", component)
+    ##SimpleObj.save("legs_seat", back_seat)
     
         
 def save(name, obj):
