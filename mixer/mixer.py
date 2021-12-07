@@ -64,7 +64,7 @@ def random_choose(objs):
     
 def test(objs):
     # get seat
-    original = 2
+    original =4
     print(original)
     seat = objs[original].components["objs"]["seat"]   
     
@@ -85,7 +85,7 @@ def test(objs):
     arm_rests_center = objs[num].components["part_centers"]["arm_rests"]
     
     # get leg
-    num = 0
+    num = 4
     print(num)
     legs = objs[num].components["objs"]["legs"]
     legs_center = objs[num].components["part_centers"]["legs"]
@@ -119,49 +119,6 @@ def test(objs):
         }
     }
   
-def change_seat_back(component):
-    backX = []
-    backY = []
-    backZ = []
-    for v in component["original_obj"]["back"].verts:
-        backX += [v[0]]
-        backY += [v[1]]
-        backZ += [v[2]]
-        
-    resultBackX = []
-    resultBackY = []
-    resultBackZ = []
-    for v in component["result_obj"]["back"].verts:
-        resultBackX += [v[0]]
-        resultBackY += [v[1]]
-        resultBackZ += [v[2]]
-    
-    x1 = max(backX) - min(backX)
-    x2 = max(resultBackX) - min(resultBackX)
-    aX = x1/x2
-    y1 = max(backY) - min(backY) 
-    y2 = abs(max(resultBackY) - min(resultBackY))
-    aY = y1/y2
-    bY = min(backY) - min(resultBackY) * aY
-    
-    z1 = max(backZ) - min(backZ)
-    z2 = max(resultBackZ) - min(resultBackZ)
-    aZ = z1/z2
-    
-    bZ = min(backZ) - min(resultBackZ) * aZ
-    
-    for v1 in component["result_obj"]["back"].verts:
-        v1[0] = v1[0] * aX
-        v1[1] = v1[1] * aY + bY
-        v1[2] = v1[2] * aZ
-    return {
-        "result_obj": {
-            "back": component["result_obj"]["back"],
-            "seat": component["result_obj"]["seat"],
-            "legs": component["result_obj"]["legs"],
-            "arm_rests": component["result_obj"]["arm_rests"],
-        }
-    }
 
 def split_vertex(part):
     x = []
@@ -193,7 +150,7 @@ def get_used_vertex(part):
 
 def get_top_size(part):
     x, y, z = split_vertex(part)
-    print("legs max", max(z),  min(z))
+    #print("legs max", max(z),  min(z))
     maxY = max(y)
     xArray = []
     zArray = []
@@ -218,22 +175,57 @@ def get_top_size(part):
     #print(xArray, zArray)
     return xArray, zArray
 
+def change_seat_back(component):
+    backX, backY, backZ = split_vertex(component["original_obj"]["back"])
+        
+    resultBackX, resultBackY, resultBackZ = split_vertex(component["result_obj"]["back"])
+    
+    x1 = max(backX) - min(backX)
+    x2 = max(resultBackX) - min(resultBackX)
+    aX = x1/x2
+    y1 = max(backY) - min(backY) 
+    y2 = abs(max(resultBackY) - min(resultBackY))
+    aY = y1/y2
+    bY = min(backY) - min(resultBackY) * aY
+    
+    z1 = max(backZ) - min(backZ)
+    z2 = max(resultBackZ) - min(resultBackZ)
+    aZ = z1/z2
+    
+    bZ = max(backZ) - max(resultBackZ) * aZ
+    
+    for v1 in component["result_obj"]["back"].verts:
+        v1[0] = v1[0] * aX
+        v1[1] = v1[1] * aY + bY
+        v1[2] = v1[2] * aZ + bZ
+    return {
+        "result_obj": {
+            "back": component["result_obj"]["back"],
+            "seat": component["result_obj"]["seat"],
+            "legs": component["result_obj"]["legs"],
+            "arm_rests": component["result_obj"]["arm_rests"],
+        }
+    }
+
 def change_seat_legs(component):
     seatX, seatY, seatZ = split_vertex(component["result_obj"]["seat"])
     SimpleObj.save("leg", component["result_obj"]["legs"][0])
+    SimpleObj.save("leg1", component["original_obj"]["legs"][0])
     legsX, legsY, legsZ = split_vertex(component["original_obj"]["legs"][0]) 
-    resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][3])
+    resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
     
     
     bY = max(legsY) - max(resultLegsY)
     y2 = max(resultLegsY) - min(resultLegsY)
     y1 = max(legsY) - min(legsY)
     aY = y1/y2
-    
+    print(max(resultLegsY), max(legsY))
+    print("by", bY)
     for leg in component["result_obj"]["legs"]:               
         for v in leg.verts:
             v[1] += bY
-    resultLegsY += bY      
+    resultLegsY += bY    
+      
     oXmax = max(seatX)
     oXmin = min(seatX)
     oZmax = max(seatZ)
@@ -245,7 +237,8 @@ def change_seat_legs(component):
             tX, tZ = get_top_size(leg)
             topX += tX
             topZ += tZ
-            
+    else:
+        topX, topZ = get_top_size(component["result_obj"]["legs"][0])        
     # change seat size by Z         
     minTopZ = min(topZ)
     maxTopZ = max(topZ)    
@@ -258,6 +251,9 @@ def change_seat_legs(component):
             v[2] = v[2] * aZ
         for v in component["original_obj"]["back"].verts:
             v[2] = v[2] * aZ
+        for arm in component["original_obj"]["arm_rests"]:
+            for v in arm.verts:
+                v[2] = v[2] * aZ
         oZmax *= aZ
         oZmin *= aZ
         if minTopZ < oZmin and maxTopZ < oZmax:
@@ -276,6 +272,9 @@ def change_seat_legs(component):
                 v[2] = v[2] * aZ
             for v in component["original_obj"]["back"].verts:
                 v[2] = v[2] * aZ
+            for arm in component["original_obj"]["arm_rests"]:
+                for v in arm.verts:
+                    v[2] = v[2] * aZ
             oZmax *= aZ
             oZmin *= aZ
             #print("move", minTopZ, oZmin, maxTopZ, oZmax)
@@ -299,6 +298,9 @@ def change_seat_legs(component):
             v[0] = v[0] * aX
         for v in component["original_obj"]["back"].verts:
             v[0] = v[0] * aX
+        for arm in component["original_obj"]["arm_rests"]:
+            for v in arm.verts:
+                v[0] = v[0] * aX
         oXmax *= aX
         oXmin *= aX
         while min(topX) < oXmin or max(topX) > oXmax:
@@ -307,27 +309,30 @@ def change_seat_legs(component):
                 v[0] = v[0] * aX
             for v in component["original_obj"]["back"].verts:
                 v[0] = v[0] * aX
+            for arm in component["original_obj"]["arm_rests"]:
+                for v in arm.verts:
+                    v[0] = v[0] * aX
             oXmax *= aX
             oXmin *= aX              
         #print("aX", aX)
         
     # check legs height
     check = []
-    topX1, topZ1 = get_top_size(component["result_obj"]["legs"][3])
+    topX1, topZ1 = get_top_size(component["result_obj"]["legs"][0])
     #SimpleObj.save("seat-3", component["result_obj"]["legs"][1])
 
     vertex = get_used_vertex(component["result_obj"]["seat"])
     for v in vertex: 
         if v[0] > min(topX1) and v[0] < max(topX1) and v[2] > min(topZ1) and v[2] < max(topZ1):
             check += [v[1]]
-    print(len(check))
-    print("check", min(check), max(resultLegsY))
-    if check != [] and min(check) > max(resultLegsY):
-        print("move up")
-        bY = min(check) - max(resultLegsY)
-        for leg in component["result_obj"]["legs"]:               
-            for v in leg.verts:
-                v[1] += bY    
+    #print(len(check))
+    #print("check", min(check), max(resultLegsY))
+    #if check != [] and min(check) > max(resultLegsY):
+        #print("move up")
+    #    bY = min(check) - max(resultLegsY)
+    #    for leg in component["result_obj"]["legs"]:               
+    #        for v in leg.verts:
+    #            v[1] += bY    
     #print("original seat", max(resultLegsY), min(seatY),  max(legsY), component["original_center"]["seat"][0][1]) 
     return {
         "original_obj": {
@@ -382,25 +387,61 @@ def change_arm_rests(component):
         #    v[2] = v[2] * aZ + bZ
 
 
-def mixer(objs):
+def change_arm_rest(component):
+    #pprint.pprint(component)
+    if component["result_obj"]["arm_rests"] != []:
+        resultArmX, resultArmY, resultArmZ = split_vertex(component["result_obj"]["arm_rests"][0])
+        if component["original_obj"]["arm_rests"] != []:
+            print("change arm")
+            armX, armY, armZ = split_vertex(component["original_obj"]["arm_rests"][0])           
+            x1 = max(armX) - min(armX)
+            x2 = max(resultArmX) - min(resultArmX)
+            aX = x1/x2
+            bX = min(armX) - min(resultArmX)
+            
+            y1 = max(armY) - min(armY)
+            y2 = max(resultArmY) - min(resultArmY)
+            aY = y1/y2
+            bY = min(armY) - min(resultArmY) * aY
+            
+            z1 = max(armZ) - min(armZ)
+            z2 = max(resultArmZ) - min(resultArmZ)
+            aZ = z1/z2
+            bZ = min(armZ) - min(resultArmZ) * aZ
+            
+            for v in component["result_obj"]["arm_rests"][0].verts:
+                v[0] = v[0] * aX + bX
+                v[1] = v[1] * aY + bY
+                v[2] = v[2] * aZ + bZ 
+            
+            for v in component["result_obj"]["arm_rests"][1].verts:
+                v[0] = v[0] * aX - bX
+                v[1] = v[1] * aY + bY
+                v[2] = v[2] * aZ + bZ 
+    
+    return {
+        "result_obj": {
+            "back": component["result_obj"]["back"],
+            "seat": component["result_obj"]["seat"],
+            "legs": component["result_obj"]["legs"],
+            "arm_rests": component["result_obj"]["arm_rests"],
+        }
+    }
+def mixer(objs, filename):
     
     #component = random_choose(objs)
     component = test(objs)
-    com = change_seat_legs(component)
-    component["result_obj"] = com["result_obj"]
-    component["original_obj"] = com["original_obj"]
-    component["result_obj"] = change_seat_back(component)["result_obj"]
-    
-    x = component["original_center"]["seat"][0][0]
-    y = component["original_center"]["seat"][0][1]
-    z = component["original_center"]["seat"][0][2]
-     
+    #com = change_seat_legs(component)
+    #component["result_obj"] = com["result_obj"]
+    #component["original_obj"] = com["original_obj"]
+    #component["result_obj"] = change_seat_back(component)["result_obj"]
+    #component["result_obj"] = change_arm_rest(component)["result_obj"]
     
     #back_seat = SimpleObj.merge_objs([component["result_obj"]["seat"], component["result_obj"]["legs"][0], 
     #                                 component["result_obj"]["legs"][1], component["result_obj"]["legs"][2],
     #                                 component["result_obj"]["legs"][3]])
     #back_seat = SimpleObj.merge_objs([component["result_obj"]["seat"], component["result_obj"]["legs"][2]])
-    save("result_obj", component)
+    save(filename, component)
     ##SimpleObj.save("legs_seat", back_seat)
     
         
