@@ -137,14 +137,12 @@ class Model:
 		kmeans = KMeans(n_clusters=1, random_state=0).fit(X)
 		back_group = kmeans.labels_
 		back_center = kmeans.cluster_centers_
-		# print("back",kmeans.labels_, kmeans.cluster_centers_)
 		X = seats
 		kmeans = KMeans(n_clusters=1, random_state=0).fit(X)
 		seat_group = kmeans.labels_
 		seat_center = kmeans.cluster_centers_
-		# print("seat",kmeans.labels_)
 		X = legs
-		# gets can vary
+		# legs can vary
 		kmeans1 = KMeans(n_clusters=1, random_state=0).fit(X) # for one leg chairs
 		kmeans4 = None
 		if len(X) >= 4:
@@ -158,7 +156,6 @@ class Model:
 			legs_group = kmeans1.labels_
 			legs_centers = kmeans1.cluster_centers_
 			has_four_legs = False
-		# print("legs",kmeans.labels_)
 		
 		arm_rests_centers = [[]]
 		if has_arm_rests:
@@ -166,7 +163,6 @@ class Model:
 			kmeans = KMeans(n_clusters=2, random_state=0).fit(X)
 			arm_rests_group = kmeans.labels_
 			arm_rests_centers = kmeans.cluster_centers_
-			# print("arms",kmeans.labels_)
 
 		back_objs, seat_objs, legs_objs, armrests_objs = [[]], [[]], [[],[],[],[]], [[],[]]
 		bi,si,li,ai = 0,0,0,0
@@ -197,23 +193,14 @@ class Model:
 		seat = SimpleObj.merge_objs(seat_objs[0])
 		legs = []
 		arm_rests = []
-		# SimpleObj.save("back", SimpleObj.merge_objs(back_objs[0]))
-		# SimpleObj.save("seat", SimpleObj.merge_objs(seat_objs[0]))
 		if has_four_legs:
 			legs = [SimpleObj.merge_objs(legs_objs[i]) for i in range(4)]
-			# SimpleObj.save("leg1", SimpleObj.merge_objs(legs_objs[0]))
-			# SimpleObj.save("leg2", SimpleObj.merge_objs(legs_objs[1]))
-			# SimpleObj.save("leg3", SimpleObj.merge_objs(legs_objs[2]))
-			# SimpleObj.save("leg4", SimpleObj.merge_objs(legs_objs[3]))
 		else:
 			legs.append(SimpleObj.merge_objs(legs_objs[0]))
-			# SimpleObj.save("leg1", SimpleObj.merge_objs(legs_objs[0]))
 		if has_arm_rests:
 			arm_rests = [SimpleObj.merge_objs(armrests_objs[i]) for i in range(2)]
-			# SimpleObj.save("arm1", SimpleObj.merge_objs(armrests_objs[0]))
-			# SimpleObj.save("arm2", SimpleObj.merge_objs(armrests_objs[1]))
 
-		return {
+		parts = {
 			"objs": {
 				"back": back, 
 				"seat": seat, 
@@ -226,11 +213,34 @@ class Model:
 				"arm_rests": arm_rests_centers,
 				},
 		}
+
+		self.fix_model(parts)
+
+		return parts
 		# merge the part objs
 
-		
+	def fix_model(self, parts):
+		"""
+		Some models have weird tranlation artifacts
+		this function will fix some specific models
+		"""
+		objs = parts["objs"]
+		centers = parts["part_centers"]
+		if self.symh_id == 1392:
+			# only 1 leg
+			self.translate(objs["legs"][0], centers["legs"][0], np.array([0, 0.15, 0]))
+			self.translate(objs["back"], centers["back"], np.array([0, 0, 0.05]))
+			# left arm
+			self.translate(objs["arm_rests"][0], centers["arm_rests"][0], np.array([0.02, 0, 0]))
+			# right arm
+			self.translate(objs["arm_rests"][1], centers["arm_rests"][1], np.array([-0.02, 0, 0]))
 
 
+	# this will translate the part and its part center
+	def translate(self, part, part_center, translation):
+		part_center += translation
+		for vert in part.verts:
+			vert += translation
 
 	def _vrrotvec2mat(self, rotvector):
 		"""
