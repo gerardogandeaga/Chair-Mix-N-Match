@@ -1,0 +1,6 @@
+{
+    "files.watcherExclude": {
+        "**/_partnet-chairs/**": true,
+        "**/mix-n-match-env/**": true
+    }
+}

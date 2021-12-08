@@ -1,8 +1,15 @@
 _partnet-chairs/
-dataset/
+dataset*/
 venv/
 */__pycache__
 *.obj
 
 .DS_Store
 .vim/
+
+<<<<<<< HEAD
+mix-n-match-env/
+=======
+scorer/evaluate-chairs/
+*.bmp
+>>>>>>> 86b798970a574507c4ecf2d31526de499c5bb9e0
