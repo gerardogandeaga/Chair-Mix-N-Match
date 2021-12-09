@@ -21,7 +21,7 @@ def random_choose(objs):
     # get arm rest
     num = random.randint(0, len(objs)-1)
     i = 0
-    while objs[num].components["objs"]["arm_rests"] != [] or i >= 5:
+    while objs[num].components["objs"]["arm_rests"] == [] and i <=1:
         num = random.randint(0, len(objs)-1)
         i += 1
     arm_rest = objs[num].components["objs"]["arm_rests"]
@@ -75,7 +75,7 @@ def test(objs):
     back_center = objs[num].components["part_centers"]["back"]
     
     # get arm rest
-    num = 1
+    num = 0
     i = 0
     while objs[num].components["objs"]["arm_rests"] == [] or i == 5:
         num = random.randint(0, len(objs)-1)
@@ -192,7 +192,7 @@ def change_seat_back(component):
     z2 = max(resultBackZ) - min(resultBackZ)
     aZ = z1/z2
     
-    bZ = max(backZ) - max(resultBackZ) * aZ
+    bZ = min(backZ) - min(resultBackZ) * aZ
     
     for v1 in component["result_obj"]["back"].verts:
         v1[0] = v1[0] * aX
@@ -391,13 +391,20 @@ def change_arm_rest(component):
     #pprint.pprint(component)
     if component["result_obj"]["arm_rests"] != []:
         resultArmX, resultArmY, resultArmZ = split_vertex(component["result_obj"]["arm_rests"][0])
+        resultArmX1, resultArmY1, resultArmZ1 = split_vertex(component["result_obj"]["arm_rests"][1])
         if component["original_obj"]["arm_rests"] != []:
             print("change arm")
-            armX, armY, armZ = split_vertex(component["original_obj"]["arm_rests"][0])           
+            armX, armY, armZ = split_vertex(component["original_obj"]["arm_rests"][0])    
+            armX1, armY1, armZ1 = split_vertex(component["original_obj"]["arm_rests"][1])       
             x1 = max(armX) - min(armX)
             x2 = max(resultArmX) - min(resultArmX)
             aX = x1/x2
-            bX = min(armX) - min(resultArmX)
+            bX = max(armX) - max(resultArmX) * aX
+            
+            x11 = max(armX1) - min(armX1)
+            x21 = max(resultArmX1) - min(resultArmX1)
+            aX1 = x11/x21
+            bX1 = min(armX1) - min(resultArmX1) * aX1
             
             y1 = max(armY) - min(armY)
             y2 = max(resultArmY) - min(resultArmY)
@@ -407,15 +414,15 @@ def change_arm_rest(component):
             z1 = max(armZ) - min(armZ)
             z2 = max(resultArmZ) - min(resultArmZ)
             aZ = z1/z2
-            bZ = min(armZ) - min(resultArmZ) * aZ
-            
+            bZ = max(armZ) - max(resultArmZ) * aZ
+            print(bX, bX1)
             for v in component["result_obj"]["arm_rests"][0].verts:
                 v[0] = v[0] * aX + bX
                 v[1] = v[1] * aY + bY
                 v[2] = v[2] * aZ + bZ 
             
             for v in component["result_obj"]["arm_rests"][1].verts:
-                v[0] = v[0] * aX - bX
+                v[0] = v[0] * aX + bX1
                 v[1] = v[1] * aY + bY
                 v[2] = v[2] * aZ + bZ 
     
@@ -429,13 +436,13 @@ def change_arm_rest(component):
     }
 def mixer(objs, filename):
     
-    #component = random_choose(objs)
-    component = test(objs)
-    #com = change_seat_legs(component)
-    #component["result_obj"] = com["result_obj"]
-    #component["original_obj"] = com["original_obj"]
-    #component["result_obj"] = change_seat_back(component)["result_obj"]
-    #component["result_obj"] = change_arm_rest(component)["result_obj"]
+    component = random_choose(objs)
+    #component = test(objs)
+    com = change_seat_legs(component)
+    component["result_obj"] = com["result_obj"]
+    component["original_obj"] = com["original_obj"]
+    component["result_obj"] = change_seat_back(component)["result_obj"]
+    component["result_obj"] = change_arm_rest(component)["result_obj"]
     
     #back_seat = SimpleObj.merge_objs([component["result_obj"]["seat"], component["result_obj"]["legs"][0], 
     #                                 component["result_obj"]["legs"][1], component["result_obj"]["legs"][2],
