@@ -168,7 +168,7 @@ def save_models(models):
 
 def load_models(models):
     for i,view in enumerate(["top", "front", "side"]):
-        models[i].load_state_dict(torch.load("./scorer/models/{}/model.zip".format(view), map_location=torch.device("cpu")))
+        models[i].load_state_dict(torch.load("./scorer/models/{}/model-imp".format(view), map_location=torch.device("cpu")))
 
 def load_eval_data(dimension):
     imagesTop = []
@@ -268,6 +268,7 @@ def score_model(top, front, side):
         score = run_model(models[mi], ims[view])
         scores.append(score)
     scores = np.array(scores, dtype=int)
+    # pprint.pprint(scores)
     return np.min(scores)
 
 def test_train():
@@ -304,8 +305,6 @@ def test_evaluate():
         view_scores = evaluate_model(models[mi], ev_dataloaders[view])
         all_scores.append(view_scores)
         # scores[mi].append()
-
-    pprint.pprint(np.array(all_scores))
 
 # ================= TEST =================
 # files = os.listdir("./scorer/evaluate-chairs")
