@@ -10,7 +10,7 @@ LT_GRAY = [100, 100, 100]
 DK_GRAY = [38, 38, 38]
 X, Y, Z = 0, 1, 2
 
-def get_views(input_obj, front_path, side_path, top_path):
+def generate_views(input_obj, front_path, side_path, top_path):
     # creates a timesh with the given input file
     tri_mesh = trimesh.load(input_obj)
     # tri_mesh.apply_translation(np.array([1, , 1]))
@@ -81,7 +81,7 @@ def get_views(input_obj, front_path, side_path, top_path):
     save = cv2.resize(color, (224, 224), 0, 0, interpolation = cv2.INTER_NEAREST)
     cv2.imwrite(top_path, save, )
 
-import os
+# import os
 # base_dir = "./dataset-scorer/LeChairs/chairs-data/my-positive/"
 # src_dir = "dataset/models/"
 # objs = os.listdir(src_dir)

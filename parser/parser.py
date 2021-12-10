@@ -15,8 +15,8 @@ from .grassdata import GRASSDataset
 Simple 
 """
 
-DATASET_DIR = "./dataset"
-CHAIR_PARTS_DIR = "./_partnet-chairs"
+DATASET_DIR = "./input/symh"
+CHAIR_PARTS_DIR = "./input/partnet"
 
 class SimpleObj:
 	"""
@@ -71,7 +71,7 @@ class SimpleObj:
 		self.faces = []
 
 		if model_name != None:
-			full_path = os.path.join("./_partnet-chairs/Chair_parts/{}/objs/{}.obj".format(model_name, obj_file))
+			full_path = os.path.join(CHAIR_PARTS_DIR, "{}/objs/{}.obj".format(model_name, obj_file))
 			with open(full_path) as f:
 				lines = f.readlines()
 				self.verts = [np.array(line.split()[1:], dtype=float) for line in lines if line.startswith("v")]
@@ -433,7 +433,7 @@ class Model:
 			# the objs is a list of .obj files that map to a component of the decomosed object.
 			# we need for each pmi, we need to grab the decomposed .objs and merge them to create
 			# a single part of a chair.
-			obj_dir = os.path.join(CHAIR_PARTS_DIR, "Chair_parts/{}".format(obj_name))
+			obj_dir = os.path.join(CHAIR_PARTS_DIR, format(obj_name))
 			with open(os.path.join(obj_dir, "result_after_merging.json")) as f:
 				result_after_merging_json = json.load(f)
 				all_obj_file_names = result_after_merging_json[0]["objs"]
