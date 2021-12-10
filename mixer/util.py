@@ -1,5 +1,7 @@
 # Defines the helper functions for mixer
 
+from parser.parser import SimpleObj
+
 # split vertex to x, y, z array
 def split_vertex(part):
     x = []

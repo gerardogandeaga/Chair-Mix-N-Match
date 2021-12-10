@@ -44,7 +44,7 @@ if __name__ == "__main__":
     # the the function below hasnt been created yet, make sure to put your mixer logic in the .mixer/ folder 
     # mixer_result = Mixer.create_new_chair(models)
     
-    mixer( models, 'test' )
+    mixer( models, 'test1' )
     
     # num = 9
     # legs = models[num].components["objs"]["legs"]
