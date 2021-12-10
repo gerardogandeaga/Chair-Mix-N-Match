@@ -7,11 +7,13 @@ import os
 from parser.parser import SimpleObj, Model
 from mixer.test_mix import test_mix
 from mixer.mixer import random_choose
+from mixer.mixer_v2 import mixer
 from scorer.renderer import generate_views
 from scorer.scorer import score_model
 
 OUT_DIR = "./output"
 OUT_OBJ_PATH = os.path.join(OUT_DIR, "new_chair")
+# from mixer.mixer import mixer 
 
 if __name__ == "__main__":
     # ------------------- Parser -------------------------
@@ -66,8 +68,7 @@ if __name__ == "__main__":
 
     # ======================== END ===========================
 
-    # for i,model in enumerate(models):
-    #     parts = model.components
+    # models = Model.load_models([1919, 3366, 3521, 3204, 1131, 173, 3749, 2313, 5117, 1920]) # you should be passing the output here into the mixer
 
     #     # 1.
     #     # all you should care about from the Models class is the .components variable as that will contain all 
@@ -90,15 +91,13 @@ if __name__ == "__main__":
     # # the the function below hasnt been created yet, make sure to put your mixer logic in the .mixer/ folder 
     # # mixer_result = Mixer.create_new_chair(models)
 
-    # # SYMH ids
-    # # initial test objs
-    # # 66, 4037, 2177
-    # # 6012, 3453, 3336, 2234, 1392
-    # # 653, 18, 734, 1791, 2207, 3663, 4903, 2428, 722, 4294
-    # # presentation test objs
-
-    # models = Model.load_models([2177]) # you should be passing the output here into the mixer
-
-    # test_mix( models )
-    # random_choose( models )
-
+    # ------------------- Mixer -------------------------
+    # the the function below hasnt been created yet, make sure to put your mixer logic in the .mixer/ folder 
+    # mixer_result = Mixer.create_new_chair(models)
+    
+    # mixer( models, 'test' )
+    
+    # num = 9
+    # legs = models[num].components["objs"]["legs"]
+    # for i, l in enumerate( legs ):
+        # SimpleObj.save( 'legs-{}-{}'.format( num, i ), l )
