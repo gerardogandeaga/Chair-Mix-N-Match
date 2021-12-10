@@ -9,8 +9,8 @@ from parser.draw3dobb import showGenshape
 from parser.parser import SimpleObj, Model
 import pprint
 
-from mixer.test_mix import test_mix
-from mixer.mixer import random_choose
+# from mixer.mixer import mixer 
+from mixer.mixer_v2 import mixer
 
 if __name__ == "__main__":
     # ------------------- Parser -------------------------
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     # 6012, 3453, 3336, 2234, 1392
     # 653, 18, 734, 1791, 2207, 3663, 4903, 2428, 722, 4294
 
-    models = Model.load_models([2177]) # you should be passing the output here into the mixer
+    models = Model.load_models([1919, 3366, 3521, 3204, 1131, 173, 3749, 2313, 5117, 1920]) # you should be passing the output here into the mixer
 
     for i,model in enumerate(models):
         parts = model.components
@@ -43,8 +43,10 @@ if __name__ == "__main__":
     # ------------------- Mixer -------------------------
     # the the function below hasnt been created yet, make sure to put your mixer logic in the .mixer/ folder 
     # mixer_result = Mixer.create_new_chair(models)
-
-
-    test_mix( models )
-    random_choose( models )
-
+    
+    mixer( models, 'test' )
+    
+    # num = 9
+    # legs = models[num].components["objs"]["legs"]
+    # for i, l in enumerate( legs ):
+        # SimpleObj.save( 'legs-{}-{}'.format( num, i ), l )
