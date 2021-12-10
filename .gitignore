@@ -2,7 +2,9 @@ _partnet-chairs/
 dataset*/
 venv/
 */__pycache__
-*.obj
+
+./output/*.obj
+./output/*.png
 
 .DS_Store
 .vim/
@@ -15,3 +17,4 @@ scorer/evaluate-chairs/
 >>>>>>> 86b798970a574507c4ecf2d31526de499c5bb9e0
 
 test-driver.py
+copy_test.sh
