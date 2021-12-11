@@ -47,26 +47,28 @@ if __name__ == "__main__":
     # TODO: ABBY and ROSS
     # use the models variable to pass into your mixer.
     # Mixer.mix(models, OUT_OBJ_PATH)
-    mixer( models, 'test1' )
+    mixer( models, OUT_OBJ_PATH )
+    # test_mix( models )
     # ======================== MIXER =========================
 
-    # # ====================== RENDERER ========================
-    # # create the 3 view images
-    # print("Generating TOP, SIDE and FRONT view renders...")
-    # front_path, side_path, top_path = os.path.join(OUT_DIR, "front.png"), os.path.join(OUT_DIR, "side.png"), os.path.join(OUT_DIR, "top.png")
-    # generate_views(OUT_OBJ_PATH, front_path, side_path, top_path)
-    # # ====================== RENDERER ========================
+    # ====================== RENDERER ========================
+    
+    # create the 3 view images
+    print("Generating TOP, SIDE and FRONT view renders...")
+    front_path, side_path, top_path = os.path.join(OUT_DIR, "front.png"), os.path.join(OUT_DIR, "side.png"), os.path.join(OUT_DIR, "top.png")
+    generate_views(OUT_OBJ_PATH + '.obj', front_path, side_path, top_path)
+    # ====================== RENDERER ========================
 
-    # # ======================= SCORER =========================
-    # # print if the chair generated is probable or not
-    # print("Scoring chair...")
-    # probable = score_model(top_path, front_path, side_path)
-    # if probable == 0:
-        # print("Not a probable chair")
-    # else:
-        # print("Probable chair")
-    # print("Output chair -> '{}'".format(OUT_OBJ_PATH))
-    # # ======================= SCORER =========================
+    # ======================= SCORER =========================
+    # print if the chair generated is probable or not
+    print("Scoring chair...")
+    probable = score_model(top_path, front_path, side_path)
+    if probable == 0:
+        print("Not a probable chair")
+    else:
+        print("Probable chair")
+    print("Output chair -> '{}'".format(OUT_OBJ_PATH))
+    # ======================= SCORER =========================
 
     # ======================== END ===========================
 
