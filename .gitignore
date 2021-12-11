@@ -3,8 +3,8 @@ dataset*/
 venv/
 */__pycache__
 
-./output/*.obj
-./output/*.png
+output/*.obj
+output/*.png
 
 .DS_Store
 .vim/

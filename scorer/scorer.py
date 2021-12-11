@@ -169,7 +169,7 @@ def save_models(models):
 
 def load_models(models):
     for i,view in enumerate(["top", "front", "side"]):
-        models[i].load_state_dict(torch.load("./scorer/models/{}/model-imp".format(view), map_location=torch.device("cpu")))
+        models[i].load_state_dict(torch.load("./scorer/models/{}/model.zip".format(view), map_location=torch.device("cpu")))
 
 def load_eval_data(dimension):
     imagesTop = []
