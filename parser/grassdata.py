@@ -54,7 +54,7 @@ class Tree(object):
 class GRASSDataset(data.Dataset,):
     def __init__(self, dir,  models_num, transform=None):
         # self.dir = dir
-        dir = "./dataset"
+        dir = "./input/symh"
         self.dir = dir
         num_examples = len(os.listdir(os.path.join(dir, 'ops')))
         self.transform = transform
