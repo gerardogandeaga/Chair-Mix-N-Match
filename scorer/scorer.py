@@ -9,6 +9,7 @@ import pprint
 from torch.utils.data import TensorDataset, DataLoader
 import torch
 import torch.nn as nn
+import torch.nn.functional as nnf
 import torch.optim as optim
 from torchvision import transforms
 
@@ -249,8 +250,15 @@ def run_model(model, chair_im):
     chair_tensor = torch.unsqueeze(chair_tensor, 0)
 
     outputs = model.forward(chair_tensor)
+    # print(outputs)
     _, preds = torch.max(outputs.data, 1)
-    return preds.item()
+
+    prob = nnf.softmax(outputs, dim=1)
+    prob = prob.detach().numpy()
+    # pprint.pprint(prob[0][1])
+
+    # return prob of a good chair
+    return prob[0][1]
 
 def score_model(top, front, side):
     models = init_models()
@@ -267,7 +275,8 @@ def score_model(top, front, side):
         model.eval()
         score = run_model(models[mi], ims[view])
         scores.append(score)
-    scores = np.array(scores, dtype=int)
+    scores = np.array(scores, dtype=float)
+
     # pprint.pprint(scores)
     return np.min(scores)
 

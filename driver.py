@@ -63,10 +63,7 @@ if __name__ == "__main__":
     # print if the chair generated is probable or not
     print("Scoring chair...")
     probable = score_model(top_path, front_path, side_path)
-    if probable == 0:
-        print("Not a probable chair")
-    else:
-        print("Probable chair")
+    print("Probability of a good chair: {}".format(probable))
     print("Output chair -> '{}'".format(OUT_OBJ_PATH))
     # ======================= SCORER =========================
 
