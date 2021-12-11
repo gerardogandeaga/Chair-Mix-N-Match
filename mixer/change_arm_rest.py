@@ -45,6 +45,7 @@ def change_arm_rests(component):
         legX, legY, legZ = split_vertex(component["result_obj"]["seat"])
         
         if component["original_obj"]["arm_rests"] != [] or max(resultArmX) < min(seatX):
+            print( 'arm not fit' )
             # change arm rest without original arm rest or not fit chair after 
             # first condition
             resultArmX, resultArmY, resultArmZ = split_vertex(component["result_obj"]["arm_rests"][0])
@@ -62,12 +63,14 @@ def change_arm_rests(component):
             y1 = (max(backY) - min(backY)) * 0.5
             y2 = max(resultArmY) - min(resultArmY)
             aY = y1/y2
-            bY = max(seatY) - min(resultArmY) * aY
+            # bY = max(seatY) - min(resultArmY) * aY
+            bY = min(seatY) - min(resultArmY) * aY
             
             z1 = max(seatZ) - max(backZ)
             z2 = max(resultArmZ) - min(resultArmZ)
 
             aZ = z1/z2
+            # bZ = max(backZ) - min(resultArmZ) * aZ
             bZ = max(backZ) - min(resultArmZ) * aZ
             
             
