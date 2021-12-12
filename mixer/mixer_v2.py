@@ -1,15 +1,15 @@
 import numpy as np
 from parser.parser import SimpleObj, Model
 from mixer.get_component import choose
-from mixer.change_leg import change_seat_legs
+from mixer.change_leg import change_seat_legs, find_pieces
 from mixer.change_back import change_seat_back
 from mixer.change_arm_rest import change_arm_rests
 from mixer.util import save
     
 def mixer(objs, filename):
     
-    # component = choose(objs)
-    component = choose(objs, 6, 5, 2, 2)
+    component = choose(objs)
+    # component = choose(objs, 5,1,0,8)
     print( 'parts choosen' )
 
     com = change_seat_legs(component)
