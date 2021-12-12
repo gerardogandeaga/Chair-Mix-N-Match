@@ -3,6 +3,7 @@ dataset*/
 venv/
 */__pycache__
 
+*.obj
 output/*.obj
 output/*.png
 

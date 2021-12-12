@@ -2,13 +2,14 @@
 
 import numpy as np
 from numpy import linalg as la
+from typing import List
 from parser.parser import SimpleObj
 from mixer.util import split_vertex, get_top_size, get_used_vertex, normalize_points
 
 
 
 # separate the leg into different pieces
-def find_pieces( leg: SimpleObj, center: np.ndarray ):
+def find_pieces( leg: SimpleObj, center: np.ndarray ) -> List[ SimpleObj ]:
     out = [ leg ]
     norm_verts = normalize_points( np.array( leg.verts ) )      # normalize all vertices between 0 and 1
     norm_center = normalize_points( np.array( leg.verts ), p = center )
@@ -122,7 +123,31 @@ def change_seat_legs(component):
     for leg in component["result_obj"]["legs"]:               
         for v in leg.verts:
             v[1] += bY
-    resultLegsY += bY    
+    resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])  
+    
+    # if leg too short for seat
+    if min(resultLegsY) > min(seatY):
+        y1 = (max(seatY) - min(seatY)) * 1.1
+        y2 = max(resultLegsY) - min(resultLegsY)
+        aY = y1/y2
+        bY = max(legsY) - max(resultLegsY) * aY
+        for leg in component["result_obj"]["legs"]:               
+            for v in leg.verts:
+                v[1] = v[1] * aY + bY
+        resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
+    
+    # if leg too short for arm rests
+    if len(component["result_obj"]["arm_rests"]) != 0:
+        armX, armY, armZ = split_vertex(component["result_obj"]["arm_rests"][0])
+        if min(resultLegsY) > min(armY):
+            y1 = max(armY) - min(armY)
+            y2 = max(resultLegsY) - min(resultLegsY)
+            aY = y1/y2
+            bY = max(legsY) - max(resultLegsY) * aY
+            for leg in component["result_obj"]["legs"]:               
+                for v in leg.verts:
+                    v[1] = v[1] * aY + bY
+            resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
       
     oXmax = max(seatX)
     oXmin = min(seatX)
