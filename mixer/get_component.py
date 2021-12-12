@@ -19,7 +19,7 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
 
     # debug
     print( 'seat: {}'.format( original ))
-    SimpleObj.save( 'seat-{}'.format( original ), seat )
+    # SimpleObj.save( 'seat-{}'.format( original ), seat )
     
     
     
@@ -35,7 +35,7 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
     
     # debug
     print( 'back: {}'.format( num ))
-    SimpleObj.save( 'back-{}'.format( num ), back )
+    # SimpleObj.save( 'back-{}'.format( num ), back )
     
     
     
@@ -56,8 +56,8 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
 
     # debug
     print( 'arm rest: {}'.format( num ))
-    for i, ar in enumerate( arm_rest ):
-        SimpleObj.save( 'arm_rest-{}-{}'.format( num, i ), ar )
+    # for i, ar in enumerate( arm_rest ):
+        # SimpleObj.save( 'arm_rest-{}-{}'.format( num, i ), ar )
     
     
     
@@ -74,8 +74,8 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
     
     #debug
     print( 'legs: {}'.format( num ))
-    for i, l in enumerate( legs ):
-        SimpleObj.save( 'legs-{}-{}'.format( num, i ), l )
+    # for i, l in enumerate( legs ):
+        # SimpleObj.save( 'legs-{}-{}'.format( num, i ), l )
     
     
     
