@@ -1,5 +1,7 @@
 # Defines the helper functions for mixer
 
+import numpy as np
+from typing import List
 from parser.parser import SimpleObj
 
 # split vertex to x, y, z array
@@ -86,6 +88,14 @@ def get_top_size(part):
     #print(xArray, zArray)
     return xArray, zArray
         
+# normalize a list of array[ x, y, z ] based on the axises between 0 and 1
+def normalize_points( points: np.ndarray, p: np.ndarray = np.array([]) ) -> np.ndarray:
+    if( p.size != 0 ):
+        return ( p - np.amin( points, axis = 0 ) ) / ( np.amax( points, axis = 0 ) - np.amin( points, axis = 0 ) )
+    else:
+        return ( points - np.amin( points, axis = 0 ) ) / ( np.amax( points, axis = 0 ) - np.amin( points, axis = 0 ) )
+    
+
 # save obj
 def save(name, obj):
     test_obj = SimpleObj.merge_objs( [obj["result_obj"]["back"], obj["result_obj"]["seat"]] )
