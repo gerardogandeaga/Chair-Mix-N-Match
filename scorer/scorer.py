@@ -256,7 +256,6 @@ def run_model(model, chair_im):
     prob = nnf.softmax(outputs, dim=1)
     prob = prob.detach().numpy()
     # pprint.pprint(prob[0][1])
-
     # return prob of a good chair
     return prob[0][1]
 
@@ -277,8 +276,11 @@ def score_model(top, front, side):
         scores.append(score)
     scores = np.array(scores, dtype=float)
 
+    print("TOP, FRONT, SIDE")
     # pprint.pprint(scores)
-    return np.min(scores)
+    # print("avg", np.mean(scores))
+    # return np.min(scores)
+    return np.mean(scores)
 
 def test_train():
     models = init_models()
@@ -332,3 +334,4 @@ def test_evaluate():
 #         )
 #     )
 # ================= TEST =================
+
