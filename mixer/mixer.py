@@ -65,25 +65,25 @@ def random_choose(objs):
 # for test targent parts 
 def test(objs):
     # get seat
-    original =2
+    original =6
     print(original)
     seat = objs[original].components["objs"]["seat"]   
     
     #get back 
-    num = 2
+    num = 5
     print(num)
     back = objs[num].components["objs"]["back"]
     back_center = objs[num].components["part_centers"]["back"]
     
     # get arm rest
-    num = 0
+    num = 2
     print(num)
     arm_rest = objs[num].components["objs"]["arm_rests"]
     arm_rests_seat = objs[num].components["objs"]["seat"]
     arm_rests_center = objs[num].components["part_centers"]["arm_rests"]
     
     # get leg
-    num = 3
+    num = 2
     print(num)
     legs = objs[num].components["objs"]["legs"]
     legs_center = objs[num].components["part_centers"]["legs"]
@@ -239,18 +239,40 @@ def change_seat_legs(component):
     legsX, legsY, legsZ = split_vertex(component["original_obj"]["legs"][0]) 
     resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
     
-    
     bY = max(legsY) - max(resultLegsY)
     y2 = max(resultLegsY) - min(resultLegsY)
     y1 = max(legsY) - min(legsY)
-    aY = y1/y2
     print(max(resultLegsY), max(legsY))
     print("by", bY)
     for leg in component["result_obj"]["legs"]:               
         for v in leg.verts:
             v[1] += bY
-    resultLegsY += bY    
-      
+    resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])  
+    
+    # if leg too short for seat
+    if min(resultLegsY) > min(seatY):
+        y1 = (max(seatY) - min(seatY)) * 1.1
+        y2 = max(resultLegsY) - min(resultLegsY)
+        aY = y1/y2
+        bY = max(legsY) - max(resultLegsY) * aY
+        for leg in component["result_obj"]["legs"]:               
+            for v in leg.verts:
+                v[1] = v[1] * aY + bY
+        resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
+    
+    # if leg too short for arm rests
+    if len(component["result_obj"]["arm_rests"]) != 0:
+        armX, armY, armZ = split_vertex(component["result_obj"]["arm_rests"][0])
+        if min(resultLegsY) > min(armY):
+            y1 = max(armY) - min(armY)
+            y2 = max(resultLegsY) - min(resultLegsY)
+            aY = y1/y2
+            bY = max(legsY) - max(resultLegsY) * aY
+            for leg in component["result_obj"]["legs"]:               
+                for v in leg.verts:
+                    v[1] = v[1] * aY + bY
+            resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
+    
     oXmax = max(seatX)
     oXmin = min(seatX)
     oZmax = max(seatZ)
@@ -340,7 +362,7 @@ def change_seat_legs(component):
             oXmax *= aX
             oXmin *= aX              
         #print("aX", aX)
-        
+    
     # check legs height
     check = []
     topX1, topZ1 = get_top_size(component["result_obj"]["legs"][0])
