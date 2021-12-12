@@ -9,7 +9,7 @@ from mixer.util import save
 def mixer(objs, filename):
     
     # component = choose(objs)
-    component = choose(objs, 6, 5, 2, 2)
+    component = choose(objs, 1, 5, 9, 2)
     print( 'parts choosen' )
 
     com = change_seat_legs(component)
