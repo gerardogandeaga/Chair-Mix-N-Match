@@ -54,8 +54,9 @@ def optimize_leg( component ):
     if( len( legs ) == 1 ):
         legs = find_pieces( legs[0], component['center']['legs'][0] )
 
-    # get the top vertices of the legs
-    legs_top = [ util.get_top_verts( util.get_verts( l ) ) for l in legs ]
+    # get the vertices and top vertices
+    legs_verts = [ util.get_verts( l ) for l in legs ]
+    legs_top = [ util.get_top_verts( lv ) for lv in legs_verts ]
     
     # if the leg is still one piece, then attach the leg to the bottom of the seat
     if( len( legs ) == 1 ):
@@ -65,13 +66,13 @@ def optimize_leg( component ):
         dist = seat_min[1] - leg_top_max[1]
 
         # translate the leg in y axis
-        for v in legs[0].verts:
+        for v in legs_verts:
             v[1] += dist
     
     # else there are more than one leg piece, then attach each leg piece to the bottom of the seat
     else:
-        for leg, leg_top in zip( legs, legs_top ):
-            #get leg top min and max
+        for leg_verts, leg_top in zip( legs_verts, legs_top ):
+            # get leg top min and max
             leg_top_min = np.amin( leg_top, axis = 0 )
             leg_top_max = np.amax( leg_top, axis = 0 )
 
@@ -87,14 +88,15 @@ def optimize_leg( component ):
             dist = others_relative_min[1] - leg_top_max[1]
 
             # calculate the scaling ratio in y axis
-            leg_size = util.get_size( util.get_verts( leg ) )
+            leg_size = util.get_size( leg_verts )
             ratio = ( leg_size[1] + dist ) / leg_size[1]
 
             # calculate the translation offset in y axis
-            offset = leg_top_max[1] - leg_top_max[1] * ratio + dist
+            # offset = leg_top_max[1] - leg_top_max[1] * ratio + dist
+            offset = others_relative_min[1] - leg_top_max[1] * ratio
 
-            # translate the leg in y axis
-            for v in leg.verts:
+            # transform the leg in y axis
+            for v in leg_verts:
                 v[1] = v[1] * ratio + offset 
     
     component['result_obj']['legs'] = legs
