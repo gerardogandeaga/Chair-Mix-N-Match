@@ -67,9 +67,11 @@ def change_arm_rests(component):
             bY = min(seatY) - min(resultArmY) * aY
             # if arm rests lower than seat
             if max(resultArmY)*aY+bY < max(seatY):
-                bY = max(seatY) - (max(resultArmY)*aY-min(resultArmY)*aY)*0.15
+                print("change Y of armrest")
+                #bY = max(seatY) - (max(resultArmY)*aY-min(resultArmY)*aY)*0.15
+                bY = max(seatY) - min(resultArmY)*aY -0.09
             
-            z1 = max(seatZ) - max(backZ) + (max(backZ)-min(backZ)/2)
+            z1 = (max(seatZ) - max(backZ) + (max(backZ)-min(backZ)/2)) * 0.9
             z2 = max(resultArmZ) - min(resultArmZ)
 
             aZ = z1/z2
