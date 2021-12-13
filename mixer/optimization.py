@@ -101,6 +101,7 @@ def optimize_leg( component ):
     # refresh the vertices and top vertices
     legs = component['result_obj']['legs']
     legs_verts = [ util.get_verts( l ) for l in legs ]
+    print( 'len legs: {}'.format( [ len( l ) for l in legs_verts ] ) )
     legs_top = [ util.get_top_verts( lv ) for lv in legs_verts ]
     
     # if the leg is still one piece, then attach the leg to the bottom of the seat

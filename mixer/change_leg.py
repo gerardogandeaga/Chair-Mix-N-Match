@@ -125,8 +125,8 @@ def change_seat_legs(component):
     for leg in component["result_obj"]["legs"]:               
         for v in leg.verts:
             v[1] += bY
-            for c in resultLegsCenter:
-                c[1] += bY
+    for c in resultLegsCenter:
+        c[1] += bY
     resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])  
     
     # if leg too short for seat
@@ -138,8 +138,8 @@ def change_seat_legs(component):
         for leg in component["result_obj"]["legs"]:               
             for v in leg.verts:
                 v[1] = v[1] * aY + bY
-                for c in resultLegsCenter:
-                    c[1] = c[1] * aY + bY
+        for c in resultLegsCenter:
+            c[1] = c[1] * aY + bY
         resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
     
     # if leg too short for arm rests
@@ -153,8 +153,8 @@ def change_seat_legs(component):
             for leg in component["result_obj"]["legs"]:               
                 for v in leg.verts:
                     v[1] = v[1] * aY + bY
-                for c in resultLegsCenter:
-                    c[1] = c[1] * aY + bY
+            for c in resultLegsCenter:
+                c[1] = c[1] * aY + bY
             resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
       
     oXmax = max(seatX)
