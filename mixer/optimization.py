@@ -114,7 +114,7 @@ def optimize_back( component ):
         aX = arm2X/x
         for v in component["result_obj"]["back"].verts:
             v[0] *= aX
-
+    return
 
 # optimize the chair
 def optimize( component ):
