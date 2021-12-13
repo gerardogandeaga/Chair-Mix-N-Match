@@ -1,8 +1,31 @@
-After pulling make sure to create your virtual environment
-with "python3 -m venv venv". This created a folder called venv.
-Then run "source ./venv/bin/activate" to activate the environment in your terminal.
-Finally, run "pip install -r requirements.txt" to install all the 
-dependencies for the project.
+STEPS TO RUN: 
 
-Do not include any dataset files in the repo as they are too large and do not include your 
-venv in the repo either.
+You will have to delete the ./venv folder with...
+
+$ rm -rf venv
+
+then create a new virtual environment with...
+
+$ python3 -m venv venv
+
+Activate the new environment with (on unix or mac)...
+
+$ source ./venv/bin/activate
+
+Then install dependencies with...
+
+$ pip install -r requirements.txt
+
+Note:
+If you're running on MacOS and you get an "import opengl" error then
+you can fix it by modifying the following file:
+
+./venv/lib/python3.8/site-packages/OpenGL/platform/ctypesloader.py
+
+replace...
+
+fullName = util.find_library( name ) 
+
+at line 35 to...
+
+fullName = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/OpenGL"
