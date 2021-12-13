@@ -112,6 +112,7 @@ def change_seat_legs(component):
     SimpleObj.save("leg1", component["original_obj"]["legs"][0])
     legsX, legsY, legsZ = split_vertex(component["original_obj"]["legs"][0]) 
     resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
+    resultLegsCenter = component['center']['legs']
     
     
     bY = max(legsY) - max(resultLegsY)
@@ -124,6 +125,8 @@ def change_seat_legs(component):
     for leg in component["result_obj"]["legs"]:               
         for v in leg.verts:
             v[1] += bY
+            for c in resultLegsCenter:
+                c[1] += bY
     resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])  
     
     # if leg too short for seat
@@ -135,6 +138,8 @@ def change_seat_legs(component):
         for leg in component["result_obj"]["legs"]:               
             for v in leg.verts:
                 v[1] = v[1] * aY + bY
+                for c in resultLegsCenter:
+                    c[1] = c[1] * aY + bY
         resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
     
     # if leg too short for arm rests
@@ -148,6 +153,8 @@ def change_seat_legs(component):
             for leg in component["result_obj"]["legs"]:               
                 for v in leg.verts:
                     v[1] = v[1] * aY + bY
+                for c in resultLegsCenter:
+                    c[1] = c[1] * aY + bY
             resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
       
     oXmax = max(seatX)
@@ -199,6 +206,8 @@ def change_seat_legs(component):
             for leg in component["result_obj"]["legs"]:               
                 for v in leg.verts:
                     v[2] += z
+                for c in resultLegsCenter:
+                    c[2] += z
             minTopZ += z
             maxTopZ += z
         # max_leg_top_z > max_seat_z && min_leg_top_z > min_seat_z
@@ -208,6 +217,8 @@ def change_seat_legs(component):
             for leg in component["result_obj"]["legs"]:               
                 for v in leg.verts:
                     v[2] += z
+                for c in resultLegsCenter:
+                    c[2] += z
             minTopZ += z
             maxTopZ += z
     
@@ -289,6 +300,8 @@ def change_seat_legs(component):
     #        for v in leg.verts:
     #            v[1] += bY    
     #print("original seat", max(resultLegsY), min(seatY),  max(legsY), component["original_center"]["seat"][0][1]) 
+
+    component['center']['legs'] = resultLegsCenter
     return {
         "original_obj": {
             "back": component["original_obj"]["back"],

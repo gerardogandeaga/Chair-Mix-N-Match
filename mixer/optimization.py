@@ -13,7 +13,7 @@ def optimize_leg( component ):
     # get other parts except for legs, and merge them for the convenience of optimizing legs
     others = []
     others.append( component['result_obj']['seat'] )
-    others.append( component['result_obj']['back'] )
+    # others.append( component['result_obj']['back'] )
     for a in component['result_obj']['arm_rests']:
         others.append( a )
     others = SimpleObj.merge_objs( others )
@@ -66,12 +66,17 @@ def optimize_leg( component ):
         dist = seat_min[1] - leg_top_max[1]
 
         # translate the leg in y axis
-        for v in legs_verts:
+        for v in legs[0].verts:
             v[1] += dist
     
     # else there are more than one leg piece, then attach each leg piece to the bottom of the seat
     else:
-        for l_verts, l_top in zip( legs_verts, legs_top ):
+        leg0_ratio = 0
+        leg0_offset = 0
+        for i, ( l, l_top ) in enumerate( zip( legs, legs_top ) ):
+            # get used vertices
+            l_verts = util.get_verts( l )
+
             # get leg top min and max
             l_top_min = np.amin( l_top, axis = 0 )
             l_top_max = np.amax( l_top, axis = 0 )
@@ -95,10 +100,30 @@ def optimize_leg( component ):
             # offset = l_top_max[1] - l_top_max[1] * ratio + dist
             offset = others_relative_min[1] - l_top_max[1] * ratio
 
-            # transform the leg in y axis
-            for v in l_verts:
-                v[1] = v[1] * ratio + offset 
-    
+            # if it's 4 legs
+            if( len( legs ) == 4 ):
+                # if it's the first of the 4 legs 
+                if( i == 0 ):
+                    leg0_ratio = ratio
+                    leg0_offset = offset
+
+                    # transform the leg in y axis
+                    for v in l.verts:
+                        v[1] = v[1] * ratio + offset 
+
+                # if it's other legs of the 4 legs
+                else:
+                    # revert first leg transformation and transform the leg in y axis
+                    for v in l.verts:
+                        v[1] = ( v[1] - leg0_offset ) / leg0_ratio
+                        v[1] = v[1] * ratio + offset 
+
+            # if it's 2 legs
+            else:
+                # transform the leg in y axis
+                for v in l.verts:
+                    v[1] = v[1] * ratio + offset 
+
     component['result_obj']['legs'] = legs
     return
 
