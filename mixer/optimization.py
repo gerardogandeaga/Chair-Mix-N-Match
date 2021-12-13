@@ -96,7 +96,7 @@ def optimize_leg( component ):
 
 
     # y translation tolerance
-    epsilon_y = 0.1
+    epsilon_y = 0
 
     # refresh the vertices and top vertices
     legs = component['result_obj']['legs']

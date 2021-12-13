@@ -115,7 +115,6 @@ def change_seat_legs(component):
     resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
     resultSeatCenter = component['center']['seat']
     resultLegsCenter = component['center']['legs']
-    print( 'seatcenter: {}'.format( resultSeatCenter ) )
     
     
     bY = max(legsY) - max(resultLegsY)
