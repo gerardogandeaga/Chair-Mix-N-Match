@@ -102,9 +102,22 @@ def optimize_leg( component ):
     component['result_obj']['legs'] = legs
     return
 
+def optimize_back( component ):
+    print( 'optimizing back...' )
+    armX, armY, armZ = util.split_vertex(component["result_obj"]["arm_rests"][0])
+    armX1, armY1, armZ1 = util.split_vertex(component["result_obj"]["arm_rests"][1])
+    backX, backY, backZ = util.split_vertex(component["result_obj"]["back"])
+    
+    arm2X = max(armX1) - min(armX)
+    if max(backX)-min(backX) > arm2X:
+        x = max(backX)-min(backX)
+        aX = arm2X/x
+        for v in component["result_obj"]["back"].verts:
+            v[0] *= aX
 
 
 # optimize the chair
 def optimize( component ):
     optimize_leg( component )
+    optimize_back( component )
     return component
