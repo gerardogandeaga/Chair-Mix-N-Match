@@ -47,7 +47,9 @@ def optimize_leg( component ):
                 v[2] *= ratio 
 
 
-#---------- transform leg pieces by y ----------#
+
+#---------- split leg ----------#
+
 
 
     # if the leg is one piece, try to split it into pieces
@@ -55,6 +57,47 @@ def optimize_leg( component ):
         legs = find_pieces( legs[0], component['center']['legs'][0] )
 
     # get the vertices and top vertices
+    legs_verts = [ util.get_verts( l ) for l in legs ]
+    legs_top = [ util.get_top_verts( lv ) for lv in legs_verts ]
+
+
+
+#---------- translate individual leg pieces by x and z ----------# 
+
+
+
+    for li, l_top in enumerate( legs_top ):
+        # get leg top min and max and others min and max
+        l_top_min = np.amin( l_top, axis = 0 )
+        l_top_max = np.amax( l_top, axis = 0 )
+        others_min = np.amin( others_verts, axis = 0 )
+        others_max = np.amax( others_verts, axis = 0 )
+
+        # for x and z axises
+        for i in range( 0, 3, 2 ):
+            # if leg top is less than others min in x or z axis
+            if( l_top_min[i] < others_min[i] ):
+                print( 'move leg {} in +{} direction'.format( li, 'x' if i == 0 else 'z' ) )
+                offset = others_min[i] - l_top_min[i]
+                for l in legs:
+                    for v in l.verts:
+                        v[i] += offset
+            # if leg top is greater than others min in x or z axis
+            elif( l_top_max[i] > others_max[i] ):
+                print( 'move leg {} in -{} direction'.format( li, 'x' if i == 0 else 'z' ) )
+                offset = others_max[i] - l_top_max[i]
+                for l in legs:
+                    for v in l.verts:
+                        v[i] += offset
+
+
+
+#---------- transform leg pieces by y ----------#
+
+
+
+    # refresh the vertices and top vertices
+    legs = component['result_obj']['legs']
     legs_verts = [ util.get_verts( l ) for l in legs ]
     legs_top = [ util.get_top_verts( lv ) for lv in legs_verts ]
     
@@ -87,6 +130,35 @@ def optimize_leg( component ):
             range_min[1] = np.NINF
             range_max[1] = np.inf
             others_relative_verts = util.get_range_verts( others_verts, range_min, range_max )
+
+            # sometimes you just cannot get the vertices...
+            for attempt in range( 3 ):
+                if( len( others_relative_verts ) == 0 ):
+                    for axis in range( 0, 3, 2 ):
+                        if( l_top_min[axis] < 0 ):
+                            print( 'move leg {} in +{} direction'.format( i, 'x' if axis == 0 else 'z' ) )
+                            offset = 0.1
+                        else:
+                            print( 'move leg {} in -{} direction'.format( i, 'x' if axis == 0 else 'z' ) )
+                            offset = -0.1
+
+                        for v in l.verts:
+                            v += offset
+                            l_top_max[axis] += offset
+                            l_top_min[axis] += offset
+                    
+                    # retry
+                    range_min = np.copy( l_top_min )
+                    range_max = np.copy( l_top_max )
+                    range_min[1] = np.NINF
+                    range_max[1] = np.inf
+                    others_relative_verts = util.get_range_verts( others_verts, range_min, range_max )
+                else:
+                    break
+            else:
+                print( 'leg optimization failed' )
+                break
+
             others_relative_min = np.amin( others_relative_verts, axis = 0 )
 
             # calculate the distance between the leg top and whatever that's directly above it (y axis)
