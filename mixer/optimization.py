@@ -54,8 +54,6 @@ def optimize_leg( component ):
     if( len( legs ) == 1 ):
         legs = find_pieces( legs[0], component['center']['legs'][0] )
 
-    print( 'len: {}'.format( len( legs ) ) )
-
     # get the vertices and top vertices
     legs_verts = [ util.get_verts( l ) for l in legs ]
     legs_top = [ util.get_top_verts( lv ) for lv in legs_verts ]
@@ -114,7 +112,6 @@ def optimize_leg( component ):
                         v[1] = ( v[1] - leg0_offset ) / leg0_ratio
 
             # transform the leg in y axis
-            print( 'loop' )
             for v in l.verts:
                 v[1] = v[1] * ratio + offset 
     
