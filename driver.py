@@ -28,7 +28,6 @@ if __name__ == "__main__":
         "C": [1919, 3366, 3521, 3204, 1131, 173, 3749, 2313, 5117, 1920]
     }
 
-    # TODO: ABBY and ROSSS
     # choose some random models from the sets, however you like.
     # you can use random.sample(list, N) to select N items from a list.
     # random.sample(final_chairs_symh_id["C"], 4) <- returns a list of 4 random ids (without repition) from the C set
@@ -44,7 +43,6 @@ if __name__ == "__main__":
 
     # ======================== MIXER =========================
     print("Creating a new chair...")
-    # TODO: ABBY and ROSS
     # use the models variable to pass into your mixer.
     # Mixer.mix(models, OUT_OBJ_PATH)
     mixer( models, OUT_OBJ_PATH )
@@ -68,38 +66,3 @@ if __name__ == "__main__":
     # ======================= SCORER =========================
 
     # ======================== END ===========================
-
-    # models = Model.load_models([1919, 3366, 3521, 3204, 1131, 173, 3749, 2313, 5117, 1920]) # you should be passing the output here into the mixer
-
-    #     # 1.
-    #     # all you should care about from the Models class is the .components variable as that will contain all 
-    #     # part Objs and centers for transformations
-    #     # pprint.pprint(model.components) 
-
-    #     # 2.
-    #     # You can use this nifty save function from the SimpleObj class
-    #     # Note: the save function takes in a type of SimpleObj
-
-    #     # SimpleObj.save("back-{}".format(i), parts["objs"]["back"]) # this will save the back component of a chair
-
-    #     # 3.
-    #     # You can also merge SimpleObjs like this...
-    #     # back_and_seat_obj = SimpleObj.merge_objs([parts["objs"]["back"], parts["objs"]["seat"]]) # this will merge the back and seat SimpleObjects
-    #     # SimpleObj.save("back-and-seat-{}".format(i), back_and_seat_obj)
-    #     # SimpleObj.save("back-{}".format(i), parts["objs"]["back"]) # this will save the back component of a chair
-
-    # # ------------------- Mixer -------------------------
-    # # the the function below hasnt been created yet, make sure to put your mixer logic in the .mixer/ folder 
-    # # mixer_result = Mixer.create_new_chair(models)
-
-    # ------------------- Mixer -------------------------
-    # the the function below hasnt been created yet, make sure to put your mixer logic in the .mixer/ folder 
-    # mixer_result = Mixer.create_new_chair(models)
-    
-    # mixer( models, 'test1' )
-    # mixer( models, 'test' )
-    
-    # num = 9
-    # legs = models[num].components["objs"]["legs"]
-    # for i, l in enumerate( legs ):
-        # SimpleObj.save( 'legs-{}-{}'.format( num, i ), l )
