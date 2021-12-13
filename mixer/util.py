@@ -94,7 +94,25 @@ def normalize_points( points: np.ndarray, p: np.ndarray = np.array([]) ) -> np.n
         return ( p - np.amin( points, axis = 0 ) ) / ( np.amax( points, axis = 0 ) - np.amin( points, axis = 0 ) )
     else:
         return ( points - np.amin( points, axis = 0 ) ) / ( np.amax( points, axis = 0 ) - np.amin( points, axis = 0 ) )
-    
+
+# get a shallow copy of used vertices
+def get_verts( obj: SimpleObj ) -> np.ndarray:
+    return np.array( [ obj.verts[ i - 1 ] for face in obj.faces for i in face ] ) 
+
+# get a shallow copy of the top 10% of vertices
+def get_top_verts( verts: np.ndarray ) -> np.ndarray:
+    norm_verts = normalize_points( verts )
+    return np.array( [ v for v, nv in zip( verts, norm_verts ) if nv[1] > 0.9 ] )
+
+# get a shallow copy of vertices within a specified range
+# amin is an array that specifies the minimun x, y, z
+# amax is an array that specifies the maximun x, y, z
+def get_range_verts( verts: np.ndarray, amin: np.ndarray, amax: np.ndarray ) -> np.ndarray:
+    return np.array( [ v for v in verts if( ( v >= amin ).all() and ( v <= amax ).all() ) ] )
+
+# get the width, height, depth by using an array of vertices
+def get_size( verts: np.ndarray ) -> np.ndarray:
+    return np.amax( verts, axis = 0 ) - np.amin( verts, axis = 0 )
 
 # save obj
 def save(name, obj):

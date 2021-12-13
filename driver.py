@@ -46,7 +46,7 @@ if __name__ == "__main__":
     # use the models variable to pass into your mixer.
     # Mixer.mix(models, OUT_OBJ_PATH)
     mixer( models, OUT_OBJ_PATH )
-    # test_mix( models )
+    # test_mix( models, OUT_OBJ_PATH )
     # ======================== MIXER =========================
 
     # ====================== RENDERER ========================

@@ -1,15 +1,16 @@
 import numpy as np
 from parser.parser import SimpleObj, Model
+from mixer.util import save
 from mixer.get_component import choose
 from mixer.change_leg import change_seat_legs
 from mixer.change_back import change_seat_back
 from mixer.change_arm_rest import change_arm_rests
-from mixer.util import save
+from mixer.optimization import optimize
     
 def mixer(objs, filename):
     
     component = choose(objs)
-    # component = choose(objs, 1, 5, 9, 2) ->  choose(objs)
+    # component = choose(objs, seat_i=3, back_i=6, arm_i=3, leg_i=4)
     print( 'parts choosen' )
 
     com = change_seat_legs(component)
@@ -23,5 +24,8 @@ def mixer(objs, filename):
     component["result_obj"] = change_arm_rests(component)["result_obj"]
     print( 'arm composed' )
     
+    component["result_obj"] = optimize(component)["result_obj"]
+    print( 'chair optimized' )
+
     save(filename, component)
     print( 'obj saved' )
