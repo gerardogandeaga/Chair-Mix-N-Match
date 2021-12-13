@@ -32,8 +32,8 @@ if __name__ == "__main__":
     # you can use random.sample(list, N) to select N items from a list.
     # random.sample(final_chairs_symh_id["C"], 4) <- returns a list of 4 random ids (without repition) from the C set
     # you can implement however you like
-    # symh_ids = random.sample(final_chairs_symh_id["C"], 4)
-    symh_ids = final_chairs_symh_id["C"]
+    symh_ids = random.sample(final_chairs_symh_id["C"], 4)
+    # symh_ids = final_chairs_symh_id["C"]
 
     # ======================== PARSER ========================
     print("Reference models chosen: {} (symh_ids)".format(symh_ids))

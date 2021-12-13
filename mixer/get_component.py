@@ -47,10 +47,10 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
         num = random.randint(0, len(objs)-1)
 
     # get arm rest
-    i = 0
-    while objs[num].components["objs"]["arm_rests"] == [] and i <=3:
-        num = random.randint(0, len(objs)-1)
-        i += 1
+    # i = 1
+    # while objs[num].components["objs"]["arm_rests"] == [] and i <=3:
+        # num = random.randint(0, len(objs)-1)
+        # i += 1
     arm_rest = objs[num].components["objs"]["arm_rests"]
     arm_rests_center = objs[num].components["part_centers"]["arm_rests"]
     arm_rests_seat = objs[num].components["objs"]["seat"]
