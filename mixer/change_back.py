@@ -23,9 +23,9 @@ def change_seat_back(component):
     z2 = max(resultBackZ) - min(resultBackZ)
     aZ = z1/z2
     
-    #bZ = max(backZ) - max(resultBackZ) * aZ
+    bZ = max(backZ) - max(resultBackZ) * aZ
     
-    bZ = min(seatZ) - max(bottomZ) * aZ
+    #bZ = min(seatZ) - max(bottomZ) * aZ
     
     for v1 in component["result_obj"]["back"].verts:
         v1[0] = v1[0] * aX
