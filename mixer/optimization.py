@@ -71,32 +71,32 @@ def optimize_leg( component ):
     
     # else there are more than one leg piece, then attach each leg piece to the bottom of the seat
     else:
-        for leg_verts, leg_top in zip( legs_verts, legs_top ):
+        for l_verts, l_top in zip( legs_verts, legs_top ):
             # get leg top min and max
-            leg_top_min = np.amin( leg_top, axis = 0 )
-            leg_top_max = np.amax( leg_top, axis = 0 )
+            l_top_min = np.amin( l_top, axis = 0 )
+            l_top_max = np.amax( l_top, axis = 0 )
 
             # construct range to retrieved vertices from other parts and get the min
-            range_min = np.copy( leg_top_min )
-            range_max = np.copy( leg_top_max )
+            range_min = np.copy( l_top_min )
+            range_max = np.copy( l_top_max )
             range_min[1] = np.NINF
             range_max[1] = np.inf
             others_relative_verts = util.get_range_verts( others_verts, range_min, range_max )
             others_relative_min = np.amin( others_relative_verts, axis = 0 )
 
             # calculate the distance between the leg top and whatever that's directly above it (y axis)
-            dist = others_relative_min[1] - leg_top_max[1]
+            dist = others_relative_min[1] - l_top_max[1]
 
             # calculate the scaling ratio in y axis
-            leg_size = util.get_size( leg_verts )
-            ratio = ( leg_size[1] + dist ) / leg_size[1]
+            l_size = util.get_size( l_verts )
+            ratio = ( l_size[1] + dist ) / l_size[1]
 
             # calculate the translation offset in y axis
-            # offset = leg_top_max[1] - leg_top_max[1] * ratio + dist
-            offset = others_relative_min[1] - leg_top_max[1] * ratio
+            # offset = l_top_max[1] - l_top_max[1] * ratio + dist
+            offset = others_relative_min[1] - l_top_max[1] * ratio
 
             # transform the leg in y axis
-            for v in leg_verts:
+            for v in l_verts:
                 v[1] = v[1] * ratio + offset 
     
     component['result_obj']['legs'] = legs
