@@ -34,6 +34,7 @@ def find_pieces( leg: SimpleObj, center: np.ndarray ) -> List[ SimpleObj ]:
 
         epsilon = 0.01
         for i, q in enumerate( quadrants ):
+            print( 'scaning quadrant {}...'.format( i ) )
             for f in leg.faces:
                 for fv in f:
                     v = norm_verts[fv - 1]
@@ -119,8 +120,6 @@ def change_seat_legs(component):
     y2 = max(resultLegsY) - min(resultLegsY)
     y1 = max(legsY) - min(legsY)
     aY = y1/y2
-    print(max(resultLegsY), max(legsY))
-    print("by", bY)
     # move legs up or down
     for leg in component["result_obj"]["legs"]:               
         for v in leg.verts:
