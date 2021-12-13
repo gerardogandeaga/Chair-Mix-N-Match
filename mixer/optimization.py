@@ -95,6 +95,8 @@ def optimize_leg( component ):
 #---------- transform leg pieces by y ----------#
 
 
+    # y translation tolerance
+    epsilon_y = 0.1
 
     # refresh the vertices and top vertices
     legs = component['result_obj']['legs']
@@ -103,10 +105,25 @@ def optimize_leg( component ):
     
     # if the leg is still one piece, then attach the leg to the bottom of the seat
     if( len( legs ) == 1 ):
-        # get seat min and leg max, and calculate the distance between them in y axis
-        seat_min = np.amin( util.get_verts( component['result_obj']['seat'] ), axis = 0 )
+        # get leg top min and max
         leg_top_max = np.amax( legs_top[0], axis = 0 )
-        dist = seat_min[1] - leg_top_max[1]
+        leg_top_min = np.amin( legs_top[0], axis = 0 )
+
+        # construct range to retrieved vertices from other parts and get the min
+        range_min = np.copy( leg_top_min )
+        range_max = np.copy( leg_top_max )
+        range_min[1] = np.NINF
+        range_max[1] = np.inf
+        others_relative_verts = util.get_range_verts( others_verts, range_min, range_max )
+
+        if( len( others_relative_verts ) == 0 ):
+            # get seat center
+            # seat_min = np.amin( util.get_verts( component['result_obj']['seat'] ), axis = 0 )
+            dist_vert = component['center']['seat'][0]
+
+        # calculate the distance between them in y axis
+        dist_vert= np.amin( others_relative_verts, axis = 0 )
+        dist = dist_vert[1] - leg_top_max[1] + epsilon_y
 
         # translate the leg in y axis
         for v in legs[0].verts:
@@ -162,7 +179,7 @@ def optimize_leg( component ):
             others_relative_min = np.amin( others_relative_verts, axis = 0 )
 
             # calculate the distance between the leg top and whatever that's directly above it (y axis)
-            dist = others_relative_min[1] - l_top_max[1]
+            dist = others_relative_min[1] - l_top_max[1] + epsilon_y
 
             # calculate the scaling ratio in y axis
             l_size = util.get_size( l_verts )

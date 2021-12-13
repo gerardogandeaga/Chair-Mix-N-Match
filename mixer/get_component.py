@@ -16,6 +16,7 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
 
     # get seat
     seat = objs[original].components["objs"]["seat"]   
+    seat_center = objs[original].components["part_centers"]["seat"]
 
     # debug
     print( 'seat: {}'.format( original ))
@@ -101,6 +102,7 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
         },
         "center": {
             "back": back_center,
+            "seat": seat_center,
             "legs": legs_center,
             "arm_rests": arm_rests_center,
         }

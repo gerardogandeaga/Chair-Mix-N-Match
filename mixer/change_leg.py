@@ -113,7 +113,9 @@ def change_seat_legs(component):
     SimpleObj.save("leg1", component["original_obj"]["legs"][0])
     legsX, legsY, legsZ = split_vertex(component["original_obj"]["legs"][0]) 
     resultLegsX, resultLegsY, resultLegsZ = split_vertex(component["result_obj"]["legs"][0])
+    resultSeatCenter = component['center']['seat']
     resultLegsCenter = component['center']['legs']
+    print( 'seatcenter: {}'.format( resultSeatCenter ) )
     
     
     bY = max(legsY) - max(resultLegsY)
@@ -190,6 +192,7 @@ def change_seat_legs(component):
         aZ = z1/z2
         for v in component["result_obj"]["seat"].verts:
             v[2] = v[2] * aZ
+            resultSeatCenter[0][2] = resultSeatCenter[0][2] * aZ
         for v in component["original_obj"]["back"].verts:
             v[2] = v[2] * aZ
         for arm in component["original_obj"]["arm_rests"]:
@@ -256,6 +259,7 @@ def change_seat_legs(component):
         aX = x1/x2
         for v in component["result_obj"]["seat"].verts:
             v[0] = v[0] * aX
+            resultSeatCenter[0][0] = resultSeatCenter[0][0] * aX
         for v in component["original_obj"]["back"].verts:
             v[0] = v[0] * aX
         for arm in component["original_obj"]["arm_rests"]:
@@ -301,6 +305,7 @@ def change_seat_legs(component):
     #print("original seat", max(resultLegsY), min(seatY),  max(legsY), component["original_center"]["seat"][0][1]) 
 
     component['center']['legs'] = resultLegsCenter
+    component['center']['seat'] = resultSeatCenter
     return {
         "original_obj": {
             "back": component["original_obj"]["back"],
