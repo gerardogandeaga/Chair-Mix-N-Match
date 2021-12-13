@@ -2,25 +2,29 @@
 
 import numpy as np
 from mixer.util import split_vertex;
+from mixer.util import get_bottom_size;
 
 def change_seat_back(component):
     backX, backY, backZ = split_vertex(component["original_obj"]["back"])
-        
+    bottomX, bottomZ = get_bottom_size(component["result_obj"]["back"])
+    seatX, seatY, seatZ = split_vertex(component["result_obj"]["seat"])
     resultBackX, resultBackY, resultBackZ = split_vertex(component["result_obj"]["back"])
     
     x1 = max(backX) - min(backX)
     x2 = max(resultBackX) - min(resultBackX)
     aX = x1/x2
     y1 = max(backY) - min(backY) 
-    y2 = abs(max(resultBackY) - min(resultBackY))
+    y2 = max(resultBackY) - min(resultBackY)
     aY = y1/y2
+    
     bY = min(backY) - min(resultBackY) * aY
     
     z1 = max(backZ) - min(backZ)
     z2 = max(resultBackZ) - min(resultBackZ)
     aZ = z1/z2
     
-    bZ = min(backZ) - min(resultBackZ) * aZ
+    #bZ = max(backZ) - max(resultBackZ) * aZ
+    bZ = min(seatZ) - max(bottomZ) * aZ
     
     for v1 in component["result_obj"]["back"].verts:
         v1[0] = v1[0] * aX
