@@ -13,7 +13,6 @@ def optimize_leg( component ):
     # get other parts except for legs, and merge them for the convenience of optimizing legs
     others = []
     others.append( component['result_obj']['seat'] )
-    # others.append( component['result_obj']['back'] )
     for a in component['result_obj']['arm_rests']:
         others.append( a )
     others = SimpleObj.merge_objs( others )
@@ -118,7 +117,6 @@ def optimize_leg( component ):
 
         if( len( others_relative_verts ) == 0 ):
             # get seat center
-            # seat_min = np.amin( util.get_verts( component['result_obj']['seat'] ), axis = 0 )
             dist_vert = component['center']['seat'][0]
 
         # calculate the distance between them in y axis
@@ -186,7 +184,6 @@ def optimize_leg( component ):
             ratio = ( l_size[1] + dist ) / l_size[1]
 
             # calculate the translation offset in y axis
-            # offset = l_top_max[1] - l_top_max[1] * ratio + dist
             offset = others_relative_min[1] - l_top_max[1] * ratio
 
             # get around leg 0 bug

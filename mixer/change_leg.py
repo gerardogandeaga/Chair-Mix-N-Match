@@ -223,32 +223,11 @@ def change_seat_legs(component):
             minTopZ += z
             maxTopZ += z
     
-        # # min_leg_top_z < min_seat_z || max_leg_top_z > max_seat_z
-        # print( 'aZ: {}'.format( aZ ) )
-        # while minTopZ < oZmin or maxTopZ > oZmax:
-            # aZ = int(aZ) + (aZ - int(aZ))/4
-            # for v in component["result_obj"]["seat"].verts:
-                # v[2] = v[2] * aZ
-            # for v in component["original_obj"]["back"].verts:
-                # v[2] = v[2] * aZ
-            # for arm in component["original_obj"]["arm_rests"]:
-                # for v in arm.verts:
-                    # v[2] = v[2] * aZ
-            # oZmax *= aZ
-            # oZmin *= aZ
-            
-            # if minTopZ < oZmin and maxTopZ < oZmax:
-                # #print("move")
-                # z = (oZmax - maxTopZ)*(2/3)
-                # for leg in component["result_obj"]["legs"]:               
-                    # for v in leg.verts:
-                        # v[2] += z
-                # minTopZ += z
-                # maxTopZ += z
-    
 
 
 #---------- change seat size by X ----------#
+    
+    
     
     # if min leg top x < min seat x || max leg top x > max seat x
     if( minTopX < oXmin or maxTopX > oXmax ):
@@ -267,41 +246,11 @@ def change_seat_legs(component):
         oXmax *= aX
         oXmin *= aX
 
-        # print( 'aX: {}'.format( aX) )
-        # while min(topX) < oXmin or max(topX) > oXmax:
-            # aX = int(aX) + (aX - int(aX))/4
-            # for v in component["result_obj"]["seat"].verts:
-                # v[0] = v[0] * aX
-            # for v in component["original_obj"]["back"].verts:
-                # v[0] = v[0] * aX
-            # for arm in component["original_obj"]["arm_rests"]:
-                # for v in arm.verts:
-                    # v[0] = v[0] * aX
-            # oXmax *= aX
-            # oXmin *= aX              
-        #print("aX", aX)
 
 
+#---------- returns ----------#
 
-#---------- change leg by Y ----------#
 
-    # # check legs height
-    # check = []
-    # topX1, topZ1 = get_top_size(component["result_obj"]["legs"][0])
-
-    # vertex = get_used_vertex(component["result_obj"]["seat"])
-    # for v in vertex: 
-        # check += [v[1]]
-        # if v[0] > min(topX1) and v[0] < max(topX1) and v[2] > min(topZ1) and v[2] < max(topZ1):
-    #print(len(check))
-    #print("check", min(check), max(resultLegsY))
-    #if check != [] and min(check) > max(resultLegsY):
-        #print("move up")
-    #    bY = min(check) - max(resultLegsY)
-    #    for leg in component["result_obj"]["legs"]:               
-    #        for v in leg.verts:
-    #            v[1] += bY    
-    #print("original seat", max(resultLegsY), min(seatY),  max(legsY), component["original_center"]["seat"][0][1]) 
 
     component['center']['legs'] = resultLegsCenter
     component['center']['seat'] = resultSeatCenter

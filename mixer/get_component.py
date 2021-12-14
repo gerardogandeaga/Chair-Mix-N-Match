@@ -17,10 +17,6 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
     # get seat
     seat = objs[original].components["objs"]["seat"]   
     seat_center = objs[original].components["part_centers"]["seat"]
-
-    # debug
-    print( 'seat: {}'.format( original ))
-    # SimpleObj.save( 'seat-{}'.format( original ), seat )
     
     
     
@@ -34,10 +30,6 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
     back = objs[num].components["objs"]["back"]
     back_center = objs[num].components["part_centers"]["back"]
     
-    # debug
-    print( 'back: {}'.format( num ))
-    # SimpleObj.save( 'back-{}'.format( num ), back )
-    
     
     
     # get arm rest index
@@ -47,18 +39,9 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
         num = random.randint(0, len(objs)-1)
 
     # get arm rest
-    # i = 1
-    # while objs[num].components["objs"]["arm_rests"] == [] and i <=3:
-        # num = random.randint(0, len(objs)-1)
-        # i += 1
     arm_rest = objs[num].components["objs"]["arm_rests"]
     arm_rests_center = objs[num].components["part_centers"]["arm_rests"]
     arm_rests_seat = objs[num].components["objs"]["seat"]
-
-    # debug
-    print( 'arm rest: {}'.format( num ))
-    # for i, ar in enumerate( arm_rest ):
-        # SimpleObj.save( 'arm_rest-{}-{}'.format( num, i ), ar )
     
     
     
@@ -72,11 +55,6 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
     legs = objs[num].components["objs"]["legs"]
     legs_center = objs[num].components["part_centers"]["legs"]
     legs_seat = objs[num].components["objs"]["seat"]
-    
-    #debug
-    print( 'legs: {}'.format( num ))
-    # for i, l in enumerate( legs ):
-        # SimpleObj.save( 'legs-{}-{}'.format( num, i ), l )
     
     
     

@@ -33,7 +33,6 @@ if __name__ == "__main__":
     # random.sample(final_chairs_symh_id["C"], 4) <- returns a list of 4 random ids (without repition) from the C set
     # you can implement however you like
     symh_ids = random.sample(final_chairs_symh_id["C"], 4)
-    # symh_ids = final_chairs_symh_id["C"]
 
     # ======================== PARSER ========================
     print("Reference models chosen: {} (symh_ids)".format(symh_ids))
@@ -44,9 +43,7 @@ if __name__ == "__main__":
     # ======================== MIXER =========================
     print("Creating a new chair...")
     # use the models variable to pass into your mixer.
-    # Mixer.mix(models, OUT_OBJ_PATH)
     mixer( models, OUT_OBJ_PATH )
-    # test_mix( models, OUT_OBJ_PATH )
     # ======================== MIXER =========================
 
     # ====================== RENDERER ========================
