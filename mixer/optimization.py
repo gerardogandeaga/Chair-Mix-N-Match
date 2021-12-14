@@ -130,8 +130,6 @@ def optimize_leg( component ):
     
     # else there are more than one leg piece, then attach each leg piece to the bottom of the seat
     else:
-        leg0_ratio = 0
-        leg0_offset = 0
         for i, ( l, l_top ) in enumerate( zip( legs, legs_top ) ):
             # get used vertices
             l_verts = util.get_verts( l )
