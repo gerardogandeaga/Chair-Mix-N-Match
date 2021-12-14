@@ -8,7 +8,7 @@ def change_arm_rests(component):
         resultArmX, resultArmY, resultArmZ = split_vertex(component["result_obj"]["arm_rests"][0])
         resultArmX1, resultArmY1, resultArmZ1 = split_vertex(component["result_obj"]["arm_rests"][1])
         seatX, seatY, seatZ = split_vertex(component["result_obj"]["seat"])
-        # legX, legY, legZ = split_vertex(component["result_obj"]["seat"])
+        
         # change arm rests by original arm rest of seat
         if component["original_obj"]["arm_rests"] != []:
             print("change arm")
@@ -33,7 +33,7 @@ def change_arm_rests(component):
             z2 = max(resultArmZ) - min(resultArmZ)
             aZ = z1/z2
             bZ = max(armZ) - max(resultArmZ) * aZ
-            #print(bX, bX1)
+
             for v in component["result_obj"]["arm_rests"][0].verts:
                 v[0] = v[0] * aX + bX
                 v[1] = v[1] * aY + bY
@@ -44,40 +44,37 @@ def change_arm_rests(component):
                 v[1] = v[1] * aY + bY
                 v[2] = v[2] * aZ + bZ 
         
-        # change arm rest without original arm rest or not fit chair after 
+        # change arm rest without original arm rest or not fit chair after first condition
         resultArmX, resultArmY, resultArmZ = split_vertex(component["result_obj"]["arm_rests"][0])
         resultArmX1, resultArmY1, resultArmZ1 = split_vertex(component["result_obj"]["arm_rests"][1])
         if not component["original_obj"]["arm_rests"] or max(resultArmX) < min(seatX) or min(resultArmX1) > max(seatX):
-            print( 'arm not fit' )
-            # first condition
+            print( "can't get original arm seat or arm rest not fit, calculating..." )
             backX, backY, backZ = split_vertex(component["result_obj"]["back"])
             bottomX, bottomZ = get_bottom_size(component["result_obj"]["arm_rests"][0])
             bottomX1, bottomZ1 = get_bottom_size(component["result_obj"]["arm_rests"][1])
+            
             x1 = (max(seatX) - min(seatX)) * 0.15
             x2 = max(resultArmX) - min(resultArmX)
             aX = x1/x2
-            bX = min(seatX) - min(bottomX) * aX
             
+            bX = min(seatX) - min(bottomX) * aX
             bX1 = max(seatX) - max(bottomX1) * aX
             
             y1 = (max(backY) - min(backY)) * 0.5
             y2 = max(resultArmY) - min(resultArmY)
             aY = y1/y2
-            # bY = max(seatY) - min(resultArmY) * aY
+            # connect arm rest with botttom of seat
             bY = min(seatY) - min(resultArmY) * aY
-            # if arm rests lower than seat
+            
+            # if max of arm rests lower than seat after translate by bY
             if max(resultArmY)*aY+bY < max(seatY):
-                print("change Y of armrest")
-                #bY = max(seatY) - (max(resultArmY)*aY-min(resultArmY)*aY)*0.15
                 bY = max(seatY) - min(resultArmY)*aY -0.09
             
+            # scaling length using distance of max(seat Z) to middle of back Z
             z1 = (max(seatZ) - max(backZ) + (max(backZ)-min(backZ)/2)) * 0.9
             z2 = max(resultArmZ) - min(resultArmZ)
-
             aZ = z1/z2
-            # bZ = max(backZ) - min(resultArmZ) * aZ
             bZ = min(seatZ) - min(resultArmZ) * aZ
-            
             
             for v in component["result_obj"]["arm_rests"][0].verts:
                 v[0] = v[0] * aX + bX

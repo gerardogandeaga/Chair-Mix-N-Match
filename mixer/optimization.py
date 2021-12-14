@@ -197,16 +197,21 @@ def optimize_leg( component ):
 def optimize_back( component ):
     print( 'optimizing back...' )
     chairX = 0
+    
+    # width of arm rests + seat, if chair has arm rests 
     if component["result_obj"]["arm_rests"] != []: 
         armX, armY, armZ = util.split_vertex(component["result_obj"]["arm_rests"][0])
         armX1, armY1, armZ1 = util.split_vertex(component["result_obj"]["arm_rests"][1])
         chairX = max(armX1) - min(armX)
+    # width of seat
     else:
         seatX, seatY, seatZ = util.split_vertex(component["result_obj"]["seat"])
         chairX = max(seatX) - min(seatX)
     backX, backY, backZ = util.split_vertex(component["result_obj"]["back"])
     
+    # if back too wide for chair
     if max(backX)-min(backX) > chairX:
+        print( "scaling width of arm rests..." )
         x = max(backX)-min(backX)
         aX = chairX/x
         for v in component["result_obj"]["back"].verts:
