@@ -3,10 +3,14 @@ STEPS TO RUN:
 Clean first by running...
 
 $ ./clean.sh
+OR
+$ bash ./clean.sh
 
 Then to download the inputs and models and install dependencies run...
 
 $ ./setup.sh
+OR
+$ bash ./setup.sh
 
 Then...
 
@@ -16,7 +20,7 @@ to start the python environment
 
 The main entry point is driver.py, call it with arguments: set and number of outputs.
 E.g. python3 driver.py A 10
-will generate 10 mixed objects in mixer/output/ folder, and print generated probabilities sorted by scores.
+will generate 10 mixed objects in the output/ folder, and print generated probabilities sorted by scores.
 
 Note:
 If you're running on MacOS and you get an "import opengl" error then
