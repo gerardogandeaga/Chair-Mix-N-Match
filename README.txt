@@ -1,20 +1,18 @@
 STEPS TO RUN: 
 
-You will have to delete the ./venv folder with...
+Clean first by running...
 
-$ rm -rf venv
+$ ./clean.sh
 
-then create a new virtual environment with...
+Then to download the inputs and models and install dependencies run...
 
-$ python3 -m venv venv
+$ ./setup.sh
 
-Activate the new environment with (on unix or mac)...
+Then...
 
 $ source ./venv/bin/activate
 
-Then install dependencies with...
-
-$ pip install -r requirements.txt
+to start the python environment
 
 Note:
 If you're running on MacOS and you get an "import opengl" error then
