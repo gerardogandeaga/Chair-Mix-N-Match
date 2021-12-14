@@ -9,8 +9,8 @@ from mixer.optimization import optimize
     
 def mixer(objs, filename):
     
-    # component = choose(objs)
-    component = choose(objs, 0,1,2,3)
+    component = choose(objs)
+    # component = choose(objs, 0,1,2,3)
     print( 'parts choosen' )
 
     com = change_seat_legs(component)

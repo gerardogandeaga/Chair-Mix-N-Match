@@ -3,6 +3,7 @@ import math
 import pprint
 import random
 import os
+import sys
 
 from parser.parser import SimpleObj, Model
 from mixer.test_mix import test_mix
@@ -12,10 +13,20 @@ from scorer.renderer import generate_views
 from scorer.scorer import score_model
 
 OUT_DIR = "./output"
-OUT_OBJ_PATH = os.path.join(OUT_DIR, "new_chair")
+# OUT_OBJ_PATH = os.path.join(OUT_DIR, "new_chair")
 # from mixer.mixer import mixer 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print ("Usage: python3 driver.py <set type> <Number of Outputs>")
+        sys.exit(1)
+    elif sys.argv[1] not in set(["A","B","C"]):
+        print ("Set Index out of range")
+        sys.exit(1)
+
+    setIndex = sys.argv[1]
+    num_outputs = int(sys.argv[2])
+
     # ------------------- Parser -------------------------
     example_chairs_symh_id = {
         "A": [66, 4037, 2177],
@@ -32,7 +43,7 @@ if __name__ == "__main__":
     # you can use random.sample(list, N) to select N items from a list.
     # random.sample(final_chairs_symh_id["C"], 4) <- returns a list of 4 random ids (without repition) from the C set
     # you can implement however you like
-    symh_ids = random.sample(final_chairs_symh_id["C"], 4)
+    symh_ids = final_chairs_symh_id[setIndex]
 
     # ======================== PARSER ========================
     print("Reference models chosen: {} (symh_ids)".format(symh_ids))
@@ -40,26 +51,39 @@ if __name__ == "__main__":
     models = Model.load_models(symh_ids)
     # ======================== PARSER ========================
 
-    # ======================== MIXER =========================
-    print("Creating a new chair...")
-    # use the models variable to pass into your mixer.
-    mixer( models, OUT_OBJ_PATH )
-    # ======================== MIXER =========================
+    indexs = []
+    probables = []
 
-    # ====================== RENDERER ========================
-    
-    # create the 3 view images
-    print("Generating TOP, SIDE and FRONT view renders...")
-    front_path, side_path, top_path = os.path.join(OUT_DIR, "front.png"), os.path.join(OUT_DIR, "side.png"), os.path.join(OUT_DIR, "top.png")
-    generate_views(OUT_OBJ_PATH + '.obj', front_path, side_path, top_path)
-    # ====================== RENDERER ========================
+    for i in range(num_outputs):
+        OUT_OBJ_PATH = os.path.join(OUT_DIR, "new_chair_" + str(i))
+        # ======================== MIXER =========================
+        print("Creating a new chair...")
+        # use the models variable to pass into your mixer.
+        mixer( models, OUT_OBJ_PATH )
+        # ======================== MIXER =========================
 
-    # ======================= SCORER =========================
-    # print if the chair generated is probable or not
-    print("Scoring chair...")
-    probable = score_model(top_path, front_path, side_path)
-    print("Probability of a good chair: {}".format(probable))
-    print("Output chair -> '{}'".format(OUT_OBJ_PATH))
-    # ======================= SCORER =========================
+        # ====================== RENDERER ========================
+        
+        # create the 3 view images
+        print("Generating TOP, SIDE and FRONT view renders...")
+        front_path, side_path, top_path = os.path.join(OUT_DIR, str(i) + "_front.png"), os.path.join(OUT_DIR, str(i) + "_side.png"), os.path.join(OUT_DIR, str(i) + "_top.png")
+        generate_views(OUT_OBJ_PATH + '.obj', front_path, side_path, top_path)
+        # ====================== RENDERER ========================
+
+        # ======================= SCORER =========================
+        # print if the chair generated is probable or not
+        print("Scoring chair...")
+        probable = score_model(top_path, front_path, side_path)
+        print("Probability of a good chair: {}".format(probable))
+        print("Output chair -> '{}'".format(OUT_OBJ_PATH))
+        indexs.append(i)
+        probables.append(probable)
+        # ======================= SCORER =========================
+
+    combine = list(zip(indexs, probables))
+    combine.sort(key=lambda x:x[1])
+
+    for x in combine:
+        print(x[0], x[1])
 
     # ======================== END ===========================
