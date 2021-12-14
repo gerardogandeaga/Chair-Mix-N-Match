@@ -62,8 +62,8 @@ class SimpleObj:
 	@staticmethod
 	def create(verts, faces):
 		simple_obj = SimpleObj(None, None)
-		simple_obj.verts = verts
-		simple_obj.faces = faces
+		simple_obj.verts = copy.deepcopy(verts)
+		simple_obj.faces = copy.deepcopy(faces)
 		return simple_obj
 
 	def __init__(self, model_name, obj_file):
