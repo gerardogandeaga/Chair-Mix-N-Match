@@ -118,9 +118,10 @@ def optimize_leg( component ):
         if( len( others_relative_verts ) == 0 ):
             # get seat center
             dist_vert = component['center']['seat'][0]
+        else:
+            dist_vert = np.amin( others_relative_verts, axis = 0 )
 
         # calculate the distance between them in y axis
-        dist_vert= np.amin( others_relative_verts, axis = 0 )
         dist = dist_vert[1] - leg_top_max[1] + epsilon_y
 
         # translate the leg in y axis

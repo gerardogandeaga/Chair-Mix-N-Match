@@ -17,6 +17,8 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
     # get seat
     seat = objs[original].components["objs"]["seat"]   
     seat_center = objs[original].components["part_centers"]["seat"]
+
+    print( 'seat: {}'.format( original ))
     
     
     
@@ -30,6 +32,8 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
     back = objs[num].components["objs"]["back"]
     back_center = objs[num].components["part_centers"]["back"]
     
+    print( 'back: {}'.format( num ))
+    
     
     
     # get arm rest index
@@ -42,6 +46,8 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
     arm_rest = objs[num].components["objs"]["arm_rests"]
     arm_rests_center = objs[num].components["part_centers"]["arm_rests"]
     arm_rests_seat = objs[num].components["objs"]["seat"]
+
+    print( 'arm rest: {}'.format( num ))
     
     
     
@@ -55,6 +61,8 @@ def choose(objs, seat_i: int = -1, back_i: int = -1, arm_i: int = -1, leg_i: int
     legs = objs[num].components["objs"]["legs"]
     legs_center = objs[num].components["part_centers"]["legs"]
     legs_seat = objs[num].components["objs"]["seat"]
+    
+    print( 'legs: {}'.format( num ))
     
     
     
