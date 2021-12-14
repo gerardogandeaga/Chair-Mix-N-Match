@@ -187,17 +187,6 @@ def optimize_leg( component ):
             # calculate the translation offset in y axis
             offset = others_relative_min[1] - l_top_max[1] * ratio
 
-            # get around leg 0 bug
-            if( len( legs ) == 4 ):
-                if( i == 0 ):
-                    # save leg 0 transform
-                    leg0_ratio = ratio
-                    leg0_offset = offset
-                else:
-                    for v in l.verts:
-                        # revert leg 0 transform
-                        v[1] = ( v[1] - leg0_offset ) / leg0_ratio
-
             # transform the leg in y axis
             for v in l.verts:
                 v[1] = v[1] * ratio + offset 
