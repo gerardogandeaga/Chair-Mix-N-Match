@@ -2,6 +2,8 @@ STEPS TO RUN:
 
 Clean first by running...
 
+$ chmod u+x ./clean.sh ./setup.sh
+
 $ ./clean.sh
 OR
 $ bash ./clean.sh
